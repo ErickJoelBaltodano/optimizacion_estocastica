@@ -1,11 +1,18 @@
 rastrigin:
-	python3 Rastrigin.py
+	@echo "---------------------Rastrigin--------------------------"
+	@python3 Rastrigin.py
+	@echo "--------------------------------------------------------"
+
 
 sphere:
-	python3 Sphere.py
+	@echo "----------------------Sphere----------------------------"
+	@python3 Sphere.py
+	@echo "--------------------------------------------------------"
 
 schwefel:
-	python3 Schwefel.py
+	@echo "---------------------Schwefel---------------------------"
+	@python3 Schwefel.py
+	@echo "--------------------------------------------------------"
 
 all: rastrigin sphere schwefel
 	
