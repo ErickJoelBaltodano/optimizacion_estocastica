@@ -9,7 +9,7 @@ class Metodo_Numerico:
         dimension = len(valores)
         
         
-        #Generamos una primera solución inicial.
+        #Generamos una primera solución inicial dentro del espacio de búsqueda.
         """INCOMPLETO"""
         sol_inicial = 0
         sol_i = None
@@ -18,7 +18,8 @@ class Metodo_Numerico:
             """INCOMPLETO"""
             sol_i = i
             
-            
+        
+        #Regresamos el valor obtenido
         return sol_i
         
         
