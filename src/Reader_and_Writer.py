@@ -20,9 +20,9 @@ class Reader_and_Writer:
         numero_de_maquinas = int(linea0[1])
         
         lista_de_vertices = []
-        i = 1
-        id = 0
-        for i in range( numero_de_trabajos):
+        
+        id = 1
+        for i in range(1, numero_de_trabajos+1):
             linea_actual = lineas[i].split()
             numeros = [int (x) for x in linea_actual]
             maquina = 0

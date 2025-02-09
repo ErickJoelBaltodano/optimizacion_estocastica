@@ -1,6 +1,6 @@
  
 a:
-	@python3 Pruebita.py
+	@python3 Pruebita.py 
 
 clean:
 	@rm Pruebita_inventada.txt

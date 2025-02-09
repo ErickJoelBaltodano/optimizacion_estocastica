@@ -37,11 +37,18 @@ class Vertice:
         return self.maquina_anterior
     
     
-    def set_maquina_anterior(self,vertice):
+    def set_maquina_anterior(self,vertice:"Vertice"):
         pass
     
-    def set_maquina_siguiente(self,vertice):
+    def set_maquina_siguiente(self,vertice:"Vertice"):
         pass
+    
+    @staticmethod
+    def conectar(vertice_inicio:"Vertice",vertice_final:"Vertice"):
+        vertice_inicio.set_maquina_siguiente(vertice_final)
+        vertice_final.set_maquina_anterior(vertice_inicio)
+        
+    
     
     def __repr__(self):
-        return ""
+        return "Id: {} \n Trabajo: {} \n, Tiempo: {}\n Máquina: {}\n".format(self.id,self.trabajo,self.tiempo,self.maquina)
