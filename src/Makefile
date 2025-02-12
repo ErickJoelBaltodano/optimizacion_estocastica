@@ -1,8 +1,11 @@
  
 a:
-	@python3 Pruebita.py 
+	@python3 Version1.py 
+
+b:
+	@python3 Version2.py 
 
 clean:
-	@rm Pruebita_inventada.txt
-	@rm Pruebita.py
+	@rm Pruebita_Inventada.txt
+
 

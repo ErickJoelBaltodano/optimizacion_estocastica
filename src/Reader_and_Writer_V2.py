@@ -1,6 +1,6 @@
-from Vertice import *
 
-class Reader_and_Writer:
+
+class Reader_and_Writer_V2:
     
     
     #Método donde leemos un archivo txt y regresamos una representación del modelo job-shop.
@@ -19,28 +19,39 @@ class Reader_and_Writer:
         numero_de_trabajos =int(linea0[0])
         numero_de_maquinas = int(linea0[1])
         
-        lista_de_vertices = []
-        linea_actual = []
+        matriz_de_trabajos = []
+        matriz_de_tiempos = []
         
-        id = 1
-        for i in range(1, numero_de_trabajos+1):
+        for i in range (1, numero_de_trabajos+1):
+            #Seleccionamos la línea actual y la seccionamos por espacios.
             linea_actual = lineas[i].split()
+            
+            #La transformamos en números.
             numeros = [int (x) for x in linea_actual]
             
             #Creamos índices para iterar la lista de numeros.
             maquina = 0
             tiempo = 1
+            m = []
+            t = []
             for _ in range (int (len(numeros)/2)):
-                vertice = Vertice(id,i,numeros[maquina],numeros[tiempo])
-                lista_de_vertices.append(vertice)
+                #Agregamos el número.
+                m.append(numeros[maquina])
+                t.append(numeros[tiempo])
+                                
+                #Incrementamos los íncices.
                 maquina += 2
                 tiempo +=2
-                id +=1
+            matriz_de_tiempos.append(t)
+            matriz_de_trabajos.append(m)
+                
+                
             
+     
             
         
         
+        return numero_de_maquinas,numero_de_trabajos,matriz_de_trabajos,matriz_de_tiempos
         
-        return numero_de_maquinas , numero_de_trabajos,lista_de_vertices
         
         
