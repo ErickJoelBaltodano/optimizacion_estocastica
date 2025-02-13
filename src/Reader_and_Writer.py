@@ -22,11 +22,13 @@ class Reader_and_Writer:
         lista_de_vertices = []
         linea_actual = []
         
-        id = 1
+        id = 0
         for i in range(1, numero_de_trabajos+1):
             linea_actual = lineas[i].split()
             numeros = [int (x) for x in linea_actual]
             
+            
+        
             #Creamos índices para iterar la lista de numeros.
             maquina = 0
             tiempo = 1
