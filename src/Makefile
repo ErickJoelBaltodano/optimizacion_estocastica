@@ -8,4 +8,5 @@ b:
 clean:
 	@rm Pruebita_Inventada.txt
 
-
+otro:
+	@python3 Version_Ade.py
