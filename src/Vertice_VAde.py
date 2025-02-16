@@ -1,4 +1,4 @@
-# Basado fuertemente (casi calca) en 'Vertice.py'
+ # Basado fuertemente (casi calca) en 'Vertice.py'
 
 '''
 Agregué un constructor alternativo para los vértices "dummy": el 0 y N+1.
