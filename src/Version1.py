@@ -7,7 +7,7 @@ numero_de_maquinas, numero_de_trabajos, lista_de_vertices =Reader_and_Writer.rea
 print (lista_de_vertices)
 
 
-l =Solution_Generator.random_permutation(numero_de_maquinas,numero_de_trabajos,lista_de_vertices)
+l =Solution_Generator.random_solution(numero_de_maquinas,numero_de_trabajos,lista_de_vertices)
 
 
 print (l)
