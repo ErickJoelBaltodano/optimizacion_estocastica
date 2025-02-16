@@ -35,12 +35,13 @@ class Solution_Generator:
             
             
         return resultado
-    
+    @staticmethod
     def random_chromosome(numero_de_maquinas:int,numero_de_trabajos:int, lista_de_vertices: [Vertice]):
         lista = Solution_Generator.random_permutation(numero_de_maquinas,numero_de_trabajos)
         resultado = [lista_de_vertices[x].get_maquina()for x in lista]
         return resultado
     
+    @staticmethod
     def random_solution(numero_de_maquinas, numero_de_trabajos, lista_de_vertices):
         lista = Solution_Generator.random_permutation(numero_de_maquinas,numero_de_trabajos)
         resultado = [ [] for _ in range(numero_de_maquinas)]
@@ -50,6 +51,9 @@ class Solution_Generator:
             resultado [m].append(j)
             
         return resultado
+    
+    
+    
             
             
             
