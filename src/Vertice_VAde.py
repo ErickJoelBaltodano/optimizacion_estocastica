@@ -15,13 +15,22 @@ class Vertice:
 
     # Getters y Setters
     def get_trabajo(self):
-        return self.trabajo
+        if self.trabajo is not None:
+            return self.trabajo
+        
+        return f"Vértice Dummy (Id: {self.id})"
 
     def get_maquina(self):
-        return self.maquina
+        if self.maquina is not None:
+            return self.maquina
+
+        return f"Vértice Dummy (Id: {self.id})"
 
     def get_tiempo(self):
-        return self.tiempo
+        if self.tiempo is not None:
+            return self.tiempo
+
+        return f"Vértice Dummy (Id: {self.id})"
 
     def __repr__(self):
         if self.trabajo is None:  # Para vértices dummy

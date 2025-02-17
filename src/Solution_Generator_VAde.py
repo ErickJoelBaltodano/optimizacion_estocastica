@@ -4,7 +4,7 @@ lista de vértices son los mismos que los id's que le corresponden
 a los vértices como objeto.'''
 
 import random
-class Intento_Solution_Generator:
+class Solution_Generator:
     # Clase donde generamos soluciones que son válidas para nuestra implementación del problema del Job Shop.
     @staticmethod
     def generador_solucion(numero_de_maquinas,numero_de_trabajos,lista_de_vertices):
