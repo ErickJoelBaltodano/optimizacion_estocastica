@@ -27,8 +27,9 @@ class Evaluador_Makespan: # No tengo la menor idea de si debe ser clase o no.
                 'maquina': vert.maquina,
                 'job': vert.trabajo,
                 'pred_job': None,
-                'suc_job': None,
-                'pred_maquina': None,
+                'suc_job': None, # Hasta aquí, datos de entrada.
+
+                'pred_maquina': None, # Aquí empiezan datos de solución.
                 'suc_maquina': None,
                 'completada': False  # Nuevo campo, creo que va a servir.
             }
@@ -54,7 +55,7 @@ class Evaluador_Makespan: # No tengo la menor idea de si debe ser clase o no.
                                               # (en cada lista) las operaciones de cada máquina.
                                               # solucion[m] es la lista (ordenada) de operaciones que
                                               # se ejecutan en la máquina m+1
-            for i, op in enumerate(operaciones_maquina):
+            for i, op in enumerate(operaciones_maquina): 
                 if i > 0: # Si i==0, estamos en la primera operación que se ejecuta en la máquina.
                     info[op]['pred_maquina'] = operaciones_maquina[i-1]
                     info[operaciones_maquina[i-1]]['suc_maquina'] = op
@@ -82,7 +83,7 @@ class Evaluador_Makespan: # No tengo la menor idea de si debe ser clase o no.
             print(f"Op {op_id} no se puede planificar: su predecesora en el job ({pred_job}) no está completada.")
             return
 
-        # Verifica si la predecesora en la máquina está completada
+        # Verifica si la predecesora en la máquina está completada  
         pred_maquina = info[op_id]['pred_maquina']
         if pred_maquina is not None and not info[pred_maquina]['completada']:
             print(f"Op {op_id} no se puede planificar: su predecesora en la máquina ({pred_maquina}) no está completada.")
@@ -164,7 +165,7 @@ class Evaluador_Makespan: # No tengo la menor idea de si debe ser clase o no.
             if suc_maquina is not None:
                 Evaluador_Makespan.agregar_a_planificables(suc_maquina, info, planificables)
         
-        makespan = max(f.values()) if f else 0 # El 'makespan' 
+        makespan = max(f.values()) # El 'makespan' 
         print(f"\n--- Makespan calculado: {makespan} ---")
 
         # --- PASADA BACKWARD: Cálculo de q_i ---
