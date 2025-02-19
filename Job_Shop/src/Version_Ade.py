@@ -3,12 +3,12 @@ from Vertice_VAde import *
 from Solution_Generator_VAde import *
 from Calculadora_makespan_VAde import *
 
-numero_de_maquinas, numero_de_trabajos, lista_de_vertices =Reader_and_Writer_VAde.read("prueba3.txt")
+numero_de_maquinas, numero_de_trabajos, lista_de_vertices =Reader_and_Writer_VAde.read("./Ejemplares/prueba3.txt")
 
 print(lista_de_vertices)
 
 # Prueba de fuego:
-sol = Solution_Generator.generador_solucion(numero_de_maquinas, numero_de_trabajos, lista_de_vertices)
+sol = Solution_Management.generar_solucion(numero_de_maquinas, numero_de_trabajos, lista_de_vertices)
 
 print("\nLa solución generada es:", sol)
 

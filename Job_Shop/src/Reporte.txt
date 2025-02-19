@@ -1,0 +1,25 @@
+Adelina
+Emmanuel
+Erick Joel Baltodano Cuevas 
+
+
+Clase Reader_and_Writer: 
+Clase desde la cual leemos ejemplares del problema Job-Shop en formato txt y generamos una lista de Vertices; también desde aquí guardaremos los resultados obtenidos en la carpeta de Resultados.
+
+Clase Vertice:
+Clase donde modelamos nuestro problema Job-Shop, cada Vertice posee atributos de tiempo, maquina, id y trabajo.
+
+Clase Calculadora_makespan:
+
+Clase Solution_Management:
+Clase donde generamos soluciones iniciales, y en general realizamos operaciones sobre las soluciones, verificando sobre todo que sean soluciones viables
+ 
+Carpeta Ejemplares:
+Aquí guardamos la carpeta 
+
+Carpeta de Resultados:
+
+
+
+
+Para ejecutar el programa:
