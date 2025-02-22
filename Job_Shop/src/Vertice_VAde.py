@@ -35,4 +35,5 @@ class Vertice:
     def __repr__(self):
         if self.trabajo is None:  # Para vértices dummy
             return f"Vértice Dummy (Id: {self.id})"
-        return f"Id: {self.id}, Trabajo: {self.trabajo}, Máquina: {self.maquina}, Tiempo: {self.tiempo}"
+        return f"Id: {self.id}, Trabajo: {self.trabajo}, Máquina: {self.maquina}, Tiempo: {self.tiempo}" 
+        
