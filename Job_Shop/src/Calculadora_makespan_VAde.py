@@ -207,7 +207,7 @@ class Evaluador_Makespan:
         # Arreglos para llevar el tiempo en que cada máquina y cada job queda libre.
         tiempo_maquina = [0] * numero_de_maquinas  # índice: máquina - 1
                                                    # Al principio, cada máquina está libre en el tiempo 0.
-                                                   # Si numero_de_maquinas=3, tempo_maquina = [0, 0, 0]
+                                                   # Si numero_de_maquinas=3, tiempo_maquina = [0, 0, 0]
         tiempo_job = [0] * numero_de_trabajos      # índice: job - 1
                                                    # Al principio, cada job está libre en el tiempo 0.
         q = {} # Diccionario donde se van a guardar las qi's. Para cada operación i, q_i = t_i + d_i. Donde
@@ -256,3 +256,32 @@ class Evaluador_Makespan:
         print(f"\n--- Makespan (reverso) calculado: {makespan_reverso} ---")
 
         return makespan, r, q, info
+
+
+'''
+M1 (J3, r q)(J2, r, q)...
+M2
+...
+'''
+
+'''
+tabu = [(M3, ()(), k=10)]
+'''
+
+'''
+[[17, 1, 24, 13, 30, 10], 
+[6, 22, 26, 3, 15, 19], 
+[2, 27, 18, 23, 11, 9], 
+[21, 7, 29, 4, 14, 20], 
+[16, 28, 8, 12, 25, 5]]
+'''
+
+'''
+[[17, 24, 1, 13, 30, 10], 
+[6, 22, 26, 3, 15, 19], 
+[2, 27, 18, 23, 11, 9], 
+[21, 7, 29, 4, 14, 20], 
+[16, 28, 8, 12, 25, 5]]
+'''
+
+# tabu = [(M1, (J1, 1) (J3, 2), k=3+rand(0, L)), ...]
