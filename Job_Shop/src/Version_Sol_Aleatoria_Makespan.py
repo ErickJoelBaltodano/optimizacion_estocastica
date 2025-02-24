@@ -18,6 +18,6 @@ print("\nLa solución generada es:", sol)
 
 # Prueba de fuego 2:
 
-makespan, r, q, info = Evaluador_Makespan.calculadora_makespan(numero_de_maquinas, numero_de_trabajos, lista_de_vertices, sol)
+makespan, r, q, t, d, info = Evaluador_Makespan.calculadora_makespan(numero_de_maquinas, numero_de_trabajos, lista_de_vertices, sol)
 
 #print("\nEl makespan: ", makespan)

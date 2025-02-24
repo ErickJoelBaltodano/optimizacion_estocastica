@@ -255,7 +255,8 @@ class Evaluador_Makespan:
         makespan_reverso = max(q.values()) # El 'makespan' del recorrido al revés
         print(f"\n--- Makespan (reverso) calculado: {makespan_reverso} ---")
 
-        return makespan, r, q, info
+        return makespan, r, q, t, d, info # Por si en algún momento de la vida sirve, le pedí también que retornara los
+                                          # diccionarios con las t's y d's (como recordatorio: q = t + d)
 
 
 '''
