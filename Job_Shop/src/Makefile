@@ -16,4 +16,5 @@ info:
 
 # Ejecutar la búsqueda por vecindades con un ejemplar específico
 job-shop:
-	@python3 Busqueda_Por_Vecindades.py $(DOCUMENTO)
+	@python3 Main.py $(DOCUMENTO)
+

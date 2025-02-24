@@ -72,7 +72,7 @@ class Solution_Management:
         return solucion
     
     
-    #Método donde dada una solución generamos una vecindad de soluciones válidas.
+    # Método donde dada una solución generamos una vecindad de soluciones válidas.
     @staticmethod
     def generar_vecindad(solucion):
         vecindad = []
@@ -81,5 +81,10 @@ class Solution_Management:
         '''
         
         return vecindad
+    
+    # Método donde validamos una solución con el algoritmo de kahn.
+    @staticmethod
+    def validate_solution(solucion,numero_de_trabajos,numero_de_maquinas):
+        pass
         
         
