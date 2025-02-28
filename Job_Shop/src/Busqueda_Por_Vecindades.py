@@ -112,3 +112,8 @@ class Busqueda_Por_Vecindades:
         return mejor_sol,mejor_eval
 
 
+
+    
+    def busqueda_generacional(tamaño_generacion, numero_de_evaluaciones,operador_selector_de_padres,operador_mutacion,operador_cruza):
+        pass
+        

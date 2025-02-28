@@ -5,10 +5,10 @@ class Solution_Management:
     
     
     @staticmethod 
-    def random():
+    def random(tamaño:int,numero_de_maquinas,numero_de_trabajos,lista_de_vertices):
         pass
     @staticmethod
-    def verificate():
+    def validate_solution(solucion):
         pass
     
     @staticmethod
@@ -26,6 +26,11 @@ class Solution_Management:
     
     @staticmethod 
     def generate_poblation(tamaño:int,numero_de_maquinas,numero_de_trabajos,lista_de_vertices):
+        pass
+    
+    
+    @staticmethod 
+    def varianza_poblacional():
         pass
     
     
