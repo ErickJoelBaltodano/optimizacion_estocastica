@@ -12,6 +12,38 @@ class Busqueda_Por_Vecindades:
         self.numero_de_maquinas = numero_de_maquinas
         self.numero_de_trabajos = numero_de_trabajos
         self.lista_de_vertices = lista_de_vertices
+    
+    def random( self,no_de_iteraciones):
+        #Generamos una primera solución inicial.
+        mejor_sol = Solution_Management.generar_solucion(self.numero_de_maquinas,self.numero_de_trabajos,self.lista_de_vertices)
+        mejor_eval = None
+        
+        
+        for _ in range(no_de_iteraciones):
+            mejor_eval, r1, q1, t1, d1, info1 = Evaluador_Makespan.calculadora_makespan(self.numero_de_maquinas, self.numero_de_trabajos, 
+                                                                             self.lista_de_vertices, mejor_sol)
+            
+            vecindad, m = Generadora_de_vecinos.construir_vecindad(mejor_sol, mejor_eval, r1, q1, info1)
+            
+            # Escogemos un vecino de la vecindad actual
+            vecino = random.choice (vecindad)
+            eval_vecino, r2,q2,t2,d2,info2 = Evaluador_Makespan.calculadora_makespan(self.numero_de_maquinas,self.numero_de_trabajos,
+                                                                                   self.lista_de_vertices,vecino)
+            
+            
+            if eval_vecino < mejor_eval:
+                
+                mejor_sol = vecino
+                mejor_eval = eval_vecino         
+            
+            
+            
+            
+            
+            
+        return mejor_sol,mejor_eval
+        
+            
 
     def tabu (no_de_comparaciones:int,documento_de_entrada:str,documento_de_salida:str):
         mejor_sol = None
