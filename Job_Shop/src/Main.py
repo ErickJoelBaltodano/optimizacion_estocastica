@@ -19,4 +19,5 @@ print(lista_de_vertices)
 
 b = Busqueda_Por_Vecindades(numero_de_maquinas,numero_de_trabajos,lista_de_vertices)
 
-b.random(1000000)
+
+print(b.recocido_simulado  (100))

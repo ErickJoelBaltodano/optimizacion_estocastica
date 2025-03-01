@@ -18,3 +18,7 @@ info:
 job-shop:
 	@python3 Main.py $(DOCUMENTO)
 
+
+clean-results:
+	@cd Resultados
+	@rm *

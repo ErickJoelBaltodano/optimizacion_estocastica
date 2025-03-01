@@ -26,11 +26,23 @@ class Busqueda_Por_Vecindades:
             vecindad, m = Generadora_de_vecinos.construir_vecindad(mejor_sol, mejor_eval, r1, q1, info1)
             
             # Escogemos un vecino de la vecindad actual
-            vecino = random.choice (vecindad)
+            if vecindad != []:
+                # Caso normal.
+                vecino = random.choice (vecindad)
+            else:
+                
+                # Caso donde la solucion actual no tiene vecinos.
+                temp =Solution_Management.generar_solucion(self.numero_de_maquinas,self.numero_de_trabajos,self.lista_de_vertices)
+                eval_temp ,r,q,t,d,info = Evaluador_Makespan.calculadora_makespan(self.numero_de_maquinas,self.numero_de_trabajos,self.lista_de_vertices,temp)
+                vecindad, m = Generadora_de_vecinos.construir_vecindad(temp,eval_temp,r,q,info)
+                
+            # Evaluamos al vecino.
             eval_vecino, r2,q2,t2,d2,info2 = Evaluador_Makespan.calculadora_makespan(self.numero_de_maquinas,self.numero_de_trabajos,
                                                                                    self.lista_de_vertices,vecino)
             
             
+            
+            # Comparamos la solucion actual vs la solución del vecino.
             if eval_vecino < mejor_eval:
                 
                 mejor_sol = vecino
@@ -59,57 +71,57 @@ class Busqueda_Por_Vecindades:
         return mejor_sol,mejor_eval
 
     #Método donde aproximamos una mejor solución para el problema job-shop con el método de recocido simulado 
-    def recocido_simulado(self,no_de_evaluaciones:int,temp_inicial = 1000,factor_de_enfriamiento =.95):
-        #Generamos una primera solución inicial.
-        mejor_sol = Solution_Management.generar_solucion(self.numero_de_maquinas,self.numero_de_trabajos,self.lista_de_vertices)
+    def recocido_simulado(self,no_de_evaluaciones:int,temp_inicial = 10000,factor_de_enfriamiento =.95):
+        
+        # Inicializamos las variables temporales que vamos a utilizar.
+        mejor_sol = None
         mejor_eval = None
         comparaciones_actuales =0
-        sol_actual = mejor_sol
+        sol_actual = Solution_Management.generar_solucion(self.numero_de_maquinas,self.numero_de_trabajos,self.lista_de_vertices)
+        mejor_sol = None
         eval_actual = None
         temperatura = temp_inicial
         vecino = None
         eval_vecino = None
         
-        while temperatura > 0 or comparaciones_actuales < no_de_evaluaciones:
-            #Calculamos el makespan, las q, las r, etc.
-            makespan1, r1, q1, t1, d1, info1 = Evaluador_Makespan.calculadora_makespan(self.numero_de_maquinas, self.numero_de_trabajos, 
-                                                                             self.lista_de_vertices, mejor_sol)
-            mejor_eval = makespan1
-            eval_actual = makespan1
+        while  comparaciones_actuales < no_de_evaluaciones and temperatura > 1:
+            # Evaluamos nuestra solución actual.
+           
+            eval_actual, r1, q1, t1, d1, info1 = Evaluador_Makespan.calculadora_makespan(self.numero_de_maquinas, self.numero_de_trabajos, 
+                                                                             self.lista_de_vertices, sol_actual)
+            
+            # Iteramos nuestro contador.
+            comparaciones_actuales +=1
             #Calculamos la vecindad dada una solución actual.
-            vecindad, m = Generadora_de_vecinos.construir_vecindad(mejor_sol, makespan1, r1, q1, info1)
+            vecindad, m = Generadora_de_vecinos.construir_vecindad(sol_actual, eval_actual, r1, q1, info1)
             
             # Escogemos un vecino de la vecindad actual
             vecino = random.choice (vecindad)
             
-            makespan2, r2,q2,t2,d2,info2 = Evaluador_Makespan.calculadora_makespan(self.numero_de_maquinas,self.numero_de_trabajos,
+            eval_vecino, r2,q2,t2,d2,info2 = Evaluador_Makespan.calculadora_makespan(self.numero_de_maquinas,self.numero_de_trabajos,
                                                                                    self.lista_de_vertices,vecino)
-            eval_vecino = makespan2
-            
-            delta_E = eval_vecino - mejor_eval
-            
-            if delta_E < 0:
-                mejor_eval = eval_vecino
-                mejor_sol = vecino
-                sol_actual = mejor_sol
-                eval_actual = mejor_eval
+            # Iteramos nuestro contador.
+            comparaciones_actuales +=1            
+
+            # Si es mejor la reemplazamos.
+
+            if mejor_eval is None or eval_actual < mejor_eval:
                 
-                print ("-------------------------------------------------------------")
-                print (eval_actual)
-                print (sol_actual)
-                        
-                print ("-------------------------------------------------------------")
+                mejor_eval = eval_actual
+                mejor_sol = sol_actual
                 
             else :
-                if random.random() < math.exp(-delta_E / temperatura):
-                    
+                
+                # Si no generamos una probabilidad de mover nuestra solución actual en caso contrario no hacemos NADOTA :D
+                if random.random() < math.exp(-(eval_vecino-mejor_eval) / temperatura):
                     sol_actual = vecino
                     eval_actual = eval_vecino
             
+            # Actualizamos la temperatura
             temperatura *= factor_de_enfriamiento
-                    
-       
+        
         return mejor_sol,mejor_eval
+    
 
 
 
