@@ -1,7 +1,10 @@
 from Solution_Generator_VAde import *
 from Reader_and_Writer_VAde import *
 from Vertice_VAde import *
+from Operador_Selector_de_Padres import *
+from Operador_Cruza_de_Padres import *
 from Generadora_de_vecinos import *
+from Torneo import *
 import random
 import math
 import sys
@@ -35,6 +38,7 @@ class Busqueda_Por_Vecindades:
                 temp =Solution_Management.generar_solucion(self.numero_de_maquinas,self.numero_de_trabajos,self.lista_de_vertices)
                 eval_temp ,r,q,t,d,info = Evaluador_Makespan.calculadora_makespan(self.numero_de_maquinas,self.numero_de_trabajos,self.lista_de_vertices,temp)
                 vecindad, m = Generadora_de_vecinos.construir_vecindad(temp,eval_temp,r,q,info)
+                vecino = random.choice(vecindad)
                 
             # Evaluamos al vecino.
             eval_vecino, r2,q2,t2,d2,info2 = Evaluador_Makespan.calculadora_makespan(self.numero_de_maquinas,self.numero_de_trabajos,
@@ -71,13 +75,14 @@ class Busqueda_Por_Vecindades:
         return mejor_sol,mejor_eval
 
     #Método donde aproximamos una mejor solución para el problema job-shop con el método de recocido simulado 
-    def recocido_simulado(self,no_de_evaluaciones:int,temp_inicial = 10000,factor_de_enfriamiento =.95):
+    def recocido_simulado(self,no_de_evaluaciones:int,temp_inicial = 10000,factor_de_enfriamiento =.95, sol_actual = None):
         
         # Inicializamos las variables temporales que vamos a utilizar.
         mejor_sol = None
         mejor_eval = None
         comparaciones_actuales =0
-        sol_actual = Solution_Management.generar_solucion(self.numero_de_maquinas,self.numero_de_trabajos,self.lista_de_vertices)
+        if sol_actual is None:
+            sol_actual = Solution_Management.generar_solucion(self.numero_de_maquinas,self.numero_de_trabajos,self.lista_de_vertices)
         mejor_sol = None
         eval_actual = None
         temperatura = temp_inicial
@@ -122,10 +127,48 @@ class Busqueda_Por_Vecindades:
         
         return mejor_sol,mejor_eval
     
+    
+    
+    
+    
 
 
 
     
-    def busqueda_generacional(tamaño_generacion, numero_de_evaluaciones,operador_selector_de_padres,operador_mutacion,operador_cruza):
-        pass
+    def busqueda_generacional(tamaño_generacion = 30, numero_de_evaluaciones= 15000, evaluaciones_recocido = 250 ):
         
+        # Inicializamos la poblacion
+        poblacion = [Solution_Management.generar_solucion(self.numero_de_maquinas,self.numero_de_trabajos,self.lista_de_vertices) for _ in range(tamaño_generacion)]
+        
+        evaluaciones_actuales = 0
+        while (evaluaciones_actuales < numero_de_evaluaciones):
+            # La mejoramos tantito con pocas iteraciones de recocido simulado        
+            for individuo in poblacion:
+                individuo, _ = self.recocido_simulado(evaluaciones_recocido, sol_actual = individuo)
+                
+            # Evaluaciones de recocido x numero de individuos = no de evaluaciones actuales (tal vez)
+            evaluaciones_actuales += numero_de_evaluaciones * evaluaciones_recocido 
+            
+            # Seleccionamos padres
+            padre1, padre2 = Operador_Selector_de_Padres.random(poblacion=poblacion)
+            
+            # Cruzamos y mutamos
+            hijo1, hijo2 =Operador_Cruza_de_Padres.cruza_por_cromosoma(padre1,padre2) # 4 evaluaciones 
+            
+            #Torneo 
+            Torneo.hijos_vs_poblacion(poblacion,hijo1=hijo1,hijo2=hijo2)
+            
+            evaluaciones_actuales += 4 #tal vez
+            
+            
+        return poblacion
+            
+        
+        
+        
+        '''
+        [[1,2,3]   [[3,1,2
+        [2,1,3]     [3,1,2]
+        3,1,2]      [3,1,2]]
+        
+        '''

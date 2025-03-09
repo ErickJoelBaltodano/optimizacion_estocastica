@@ -1,7 +1,7 @@
 import random
 
 class Operador_Cruza_de_Padres:
-    
+    '''Advertencia: Este operador no garantiza generar soluciones viables'''
     @staticmethod
     def cruza_por_cromosoma(solucion1,solucion2):
         maquinas = len(solucion1)

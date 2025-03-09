@@ -14,15 +14,24 @@ class Generadora_de_vecinos:
 
     @staticmethod
     def construir_nueva_info(makespan, r, q, info):
+
         nueva_info = {}
+
         for op_id, datos in info.items():
+            print("r:", r)
+            print("q:", q)
+            print("info:", info)
             nueva_info[op_id] = {
-                **datos,  # Copiamos igualito lo que ya estaba
-                'r': r.get(op_id, 0),  # Usamos 0 como valor por defecto si la clave no existe
-                'q': q.get(op_id, 0),  # Usamos 0 como valor por defecto si la clave no existe
-                'critica': (r.get(op_id, 0) + q.get(op_id, 0)) == makespan
+                **datos, # Copiamos igualito lo que ya estaba
+                'r': r[op_id], # El ri
+                'q': q[op_id], # El qi
+                'critica': (r[op_id] + q[op_id]) == makespan # Una operación es
+                                                             # crítica sii 
+                                                             # ri + qi = makespan
             }
+
         return nueva_info
+
     '''
     Teniendo la info_auxiliar ahora podemos generar a los vecinos:
         1. Dada una solución, digamos: [[1, 8, 5], [4, 9, 2], [7, 3, 6]]
