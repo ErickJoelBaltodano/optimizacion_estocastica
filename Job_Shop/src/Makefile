@@ -5,3 +5,6 @@ generar_sol_aleatoria_y_makespan:
 
 generar_vecindad:
 	@python3 Version_Generadora_Vecinos.py
+
+reparadora_prueba:
+	@python3 Version_Reparadora.py
