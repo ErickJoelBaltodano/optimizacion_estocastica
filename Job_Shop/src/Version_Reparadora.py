@@ -26,4 +26,6 @@ makespan, r, q, t, d, info = Evaluador_Makespan.calculadora_makespan(numero_de_m
 # Vamos a reordenar la primera máquina para que esté al azar y así probar la reparadora.
 solucion_desordenada = [random.sample(maquina, len(maquina)) for maquina in solucion]
 
+print("\nLa solución ojalá no factible es: ", solucion_desordenada)
+
 solucion_reparada = Reparadora.reparacion(solucion_desordenada, lista_de_vertices)

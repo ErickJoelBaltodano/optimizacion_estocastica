@@ -55,6 +55,8 @@ class Reparadora:
         numero_de_maquinas = len(solucion)
         numero_de_trabajos = len(solucion[0])
         info = Evaluador_Makespan.construct_info(numero_de_maquinas, numero_de_trabajos, lista_de_vertices, solucion)
+
+        print(info)
         
         sigue_en_job = [] # Es la O_J del artículo.
         sigue_en_maquina = [] # Es la O_M del artículo.
@@ -94,13 +96,19 @@ class Reparadora:
             # Lista de las operaciones planificables; sus elementos están en O_J y O_M
             planificables = list(set(sigue_en_job) & set(sigue_en_maquina))
 
-            # Caso 1: `planificables` no es una lista vacía.
-            if planificables:
-                for operacion_idx, op_id in enumerate(planificables):
-                    Reparadora.actualizacion_de_listas(op_id, info, etiquetadas, sigue_en_job, sigue_en_maquina)
+            # Imprimir el estado de `info` en cada iteración
+            print("Estado de info en esta iteración:")
+            for op_id, datos in info.items():
+                print(f"Operación {op_id}: {datos}")
 
-            # Si `planificables` es vacío (pero aún hay operaciones en máquinas y/o jobs que falten por planificar).
-            else:
+            # Caso donde `planificables` no es una lista vacía.
+            for operacion_idx, op_id in enumerate(planificables):
+                Reparadora.actualizacion_de_listas(op_id, info, etiquetadas, sigue_en_job, sigue_en_maquina)
+                                
+
+            while planificables == False: # Si `planificables` es vacío (pero aún hay operaciones en
+                                          # máquinas y/o jobs que falten por planificar).
+
                 operacion_elegida_id = random.choice(sigue_en_job) # Elegimos alguna operación al azar
                                                                    # de aquellas que nos falte planificar
                                                                    # en la lista de los jobs.
@@ -133,9 +141,9 @@ class Reparadora:
                     info[operacion_elegida_id]['pred_maquina'], info[operacion_elegida_id]['suc_maquina']
 
                     # Agregamos a la lista de operaciones planificables por máquina a la operación elegida.
-                    sigue_en_maquina.append(operacion_elegida_id)
+                    sigue_en_maquina.append(op_elegida_id)
 
-                    #planificables = list(set(sigue_en_job) & set(sigue_en_maquina))
+                    planificables = list(set(sigue_en_job) & set(sigue_en_maquina))
 
                     # Hasta aquí (si todo salió bien) se supone que la intersección de O_J y O_M ya no es 
                     # vacía (y tiene como único elemento a `op_elegida_id`)
