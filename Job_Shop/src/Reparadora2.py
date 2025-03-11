@@ -142,6 +142,7 @@ class Reparadora:
 
                     # Agregamos a la lista de operaciones planificables por máquina a la operación elegida.
                     sigue_en_maquina.append(op_elegida_id)
+                    sigue_en_maquina.remove(op_id)
 
                     planificables = list(set(sigue_en_job) & set(sigue_en_maquina))
 

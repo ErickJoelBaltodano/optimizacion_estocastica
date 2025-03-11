@@ -50,11 +50,11 @@ class Reparadora:
         return # Se puede quitar, no está haciendo nada (lo dejo por costumbre).
 
     @staticmethod
-    def reparacion(solucion, lista_de_vertices):
+    def reparacion(solucion, numero_de_maquinas, numero_de_trabajos, lista_de_vertices):
 
-        numero_de_maquinas = len(solucion)
-        numero_de_trabajos = len(solucion[0])
         info = Evaluador_Makespan.construct_info(numero_de_maquinas, numero_de_trabajos, lista_de_vertices, solucion)
+        # Aquí, para toda op_id, info[op_id]['completada'] == False; esto así lo queremos 
+        # porque aún no hemos planificado ninguna operación.
         
         sigue_en_job = [] # Es la O_J del artículo.
         sigue_en_maquina = [] # Es la O_M del artículo.
@@ -91,6 +91,12 @@ class Reparadora:
         # lo anterior.
         while (planificables or (sigue_en_job or sigue_en_maquina)): 
 
+            # Algunos prints para ver cómo va la cosa:
+            print('planificables', planificables)
+            print('etiquetadas', etiquetadas)
+            print('sigue_en_job', sigue_en_job)
+            print('sigue_en_maquina', sigue_en_maquina)
+
             # Lista de las operaciones planificables; sus elementos están en O_J y O_M
             planificables = list(set(sigue_en_job) & set(sigue_en_maquina))
 
@@ -101,6 +107,7 @@ class Reparadora:
 
             # Si `planificables` es vacío (pero aún hay operaciones en máquinas y/o jobs que falten por planificar).
             else:
+                print("\n===`planificables` está vacía.===\n")
                 operacion_elegida_id = random.choice(sigue_en_job) # Elegimos alguna operación al azar
                                                                    # de aquellas que nos falte planificar
                                                                    # en la lista de los jobs.
@@ -111,19 +118,24 @@ class Reparadora:
 
                 maquina_elegida = solucion[maquina_op_elegida_idx] # Lista de operaciones en la máquina
                                                                    # elegida. Ej.: [1, 4, 8]
-                
-                # Índice de la operación elegida.
-                op_elegida_idx = maquina_elegida.index(operacion_elegida_id)
 
-                # Vamos a reordenar a la solución mandando a la `operacion_elegida_id` en la primera
+                print('\n===operacion_elegida_id == ', operacion_elegida_id)
+                print(f'===máquina elegida, {maquina_elegida} ===')
+
+                
+                # Índice dentro de la máquina de la operación elegida.
+                op_elegida_idx_maq = maquina_elegida.index(operacion_elegida_id)
+
+                # Vamos a reordenar a la máquina mandando a la `operacion_elegida_id` en la primera
                 # posición disponible después de la última operación ya planificada.
                 for operacion_idx, op_id in enumerate(maquina_elegida):
                     if info[op_id]['completada']: 
                         continue    # Si la operación en la que vamos ya está en `etiquetadas`, i.e. su 
                                     # flag está como `completada` == True, nos vamos con la que sigue.
 
-                    maquina_elegida[operacion_idx], maquina_elegida[op_elegida_idx] = \
-                    maquina_elegida[op_elegida_idx], maquina_elegida[operacion_idx]
+                    maquina_elegida[operacion_idx], maquina_elegida[op_elegida_idx_maq] = \
+                    maquina_elegida[op_elegida_idx_maq], maquina_elegida[operacion_idx]
+                    # Se hace el intercambio de operaciones dentro de la máquina.
 
                     # Cambiamos en `info` lo referente a sucesores y predecesores en máquina de las 
                     # operaciones intercambiadas.
@@ -134,7 +146,7 @@ class Reparadora:
 
                     # Agregamos a la lista de operaciones planificables por máquina a la operación elegida.
                     sigue_en_maquina.append(operacion_elegida_id)
-
+                    
                     #planificables = list(set(sigue_en_job) & set(sigue_en_maquina))
 
                     # Hasta aquí (si todo salió bien) se supone que la intersección de O_J y O_M ya no es 
@@ -142,13 +154,5 @@ class Reparadora:
                     # Pero esto se va a cotejar hasta la siguiente iteración porque aquí termina este bloque.
 
                     break # Salimos del `for`
-                         
-
-
-            # Algunos prints para ver cómo va la cosa:
-            print('planificables', planificables)
-            print('etiquetadas', etiquetadas)
-            print('sigue_en_job', sigue_en_job)
-            print('sigue_en_maquina', sigue_en_maquina)
         
         return etiquetadas

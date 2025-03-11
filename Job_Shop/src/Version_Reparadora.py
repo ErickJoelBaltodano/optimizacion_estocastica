@@ -28,4 +28,4 @@ solucion_desordenada = [random.sample(maquina, len(maquina)) for maquina in solu
 
 print("\nLa solución ojalá no factible es: ", solucion_desordenada)
 
-solucion_reparada = Reparadora.reparacion(solucion_desordenada, lista_de_vertices)
+solucion_reparada = Reparadora.reparacion(solucion_desordenada, numero_de_maquinas, numero_de_trabajos, lista_de_vertices)
