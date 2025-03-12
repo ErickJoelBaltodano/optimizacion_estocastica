@@ -146,7 +146,7 @@ class Busqueda_Por_Vecindades:
             for individuo in poblacion:
                 individuo, _ = self.recocido_simulado(evaluaciones_recocido, sol_actual = individuo)
                 
-            # Evaluaciones de recocido x numero de individuos = no de evaluaciones actuales (tal vez)
+            # Evaluaciones de recocido x numero de individuos = no de evaluaciones actuales (tal vez    )
             evaluaciones_actuales += numero_de_evaluaciones * evaluaciones_recocido 
             
             # Seleccionamos padres

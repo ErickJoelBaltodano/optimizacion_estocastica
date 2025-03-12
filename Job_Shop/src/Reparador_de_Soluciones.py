@@ -7,6 +7,3 @@ class Reparador_de_Soluciones:
         pass
     
     
-    @staticmethod 
-    def verificar (solucion):
-        pass
