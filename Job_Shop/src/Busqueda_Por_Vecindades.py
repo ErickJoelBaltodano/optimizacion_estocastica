@@ -101,7 +101,7 @@ class Busqueda_Por_Vecindades:
             vecindad, m = Generadora_de_vecinos.construir_vecindad(sol_actual, eval_actual, r1, q1, info1)
             
             # Escogemos un vecino de la vecindad actual
-            vecino = random.choice (vecindad)
+            vecino = random.choice (vecindad)  # PENDIENTE
             
             eval_vecino, r2,q2,t2,d2,info2 = Evaluador_Makespan.calculadora_makespan(self.numero_de_maquinas,self.numero_de_trabajos,
                                                                                    self.lista_de_vertices,vecino)
@@ -155,7 +155,7 @@ class Busqueda_Por_Vecindades:
             # Cruzamos y mutamos
             hijo1, hijo2 =Operador_Cruza_de_Padres.cruza_por_cromosoma(padre1,padre2) # 4 evaluaciones 
             
-            #Torneo 
+            #Torneo (los cambios quedan en la memoria)
             Torneo.hijos_vs_poblacion(poblacion,hijo1=hijo1,hijo2=hijo2)
             
             evaluaciones_actuales += 4 #tal vez

@@ -1,3 +1,6 @@
+import copy
+from Calculadora_makespan_VAde import *
+
 class Generadora_de_vecinos:
 
     '''
@@ -18,9 +21,6 @@ class Generadora_de_vecinos:
         nueva_info = {}
 
         for op_id, datos in info.items():
-            print("r:", r)
-            print("q:", q)
-            print("info:", info)
             nueva_info[op_id] = {
                 **datos, # Copiamos igualito lo que ya estaba
                 'r': r[op_id], # El ri
@@ -58,10 +58,10 @@ class Generadora_de_vecinos:
 
     @staticmethod
     def imprimir_nueva_info(nueva_info, makespan):
-        print("\n=== Estructura 'nueva_info' (operaciones críticas) ===")
+        #print("\n=== Estructura 'nueva_info' (operaciones críticas) ===")
         for op_id, datos in nueva_info.items():
             critica = datos['r'] + datos['q'] == makespan
-            print(f"Op {op_id}: r={datos['r']}, q={datos['q']}, r+q={datos['r'] + datos['q']} | ¿Crítica? {critica}")
+            #print(f"Op {op_id}: r={datos['r']}, q={datos['q']}, r+q={datos['r'] + datos['q']} | ¿Crítica? {critica}")
     
     @staticmethod
     def construir_vecindad(solucion, makespan, r, q, info):
@@ -69,36 +69,35 @@ class Generadora_de_vecinos:
         # Construye la estructura auxiliar `nueva_info`:
         nueva_info = Generadora_de_vecinos.construir_nueva_info(makespan, r, q, info)
 
-        vecindad = [] # Lista de vecinos (elegí esto porque como a priori no sabemos
+        #vecindad = [] # Lista de vecinos (elegí esto porque como a priori no sabemos
                       # exactamente cuántos vecinos hay no consideré adecuado un 
                       # np.array; pero se puede elegir un np.array de tamaño igual a
                       # la cota superior de los vecinos que es:
                       # numero_maquinas*(numero_jobs - 1) creo).
         
-        movimientos = [] # Por si posteriormente queremos implementar búsqueda tabú
-                         # (o por si sirve de algo) aquí se guarda el movimiento que
-                         # dio lugar a cada vecino.
+        vecindad_de_movimientos = [] # Se genera una lista donde los vecinos de la solución dada
+                                     # se guardan como el movimiento que se hizo para generarlos.
 
-        print("\n=== Inicio de generación de vecinos ===")
+        #print("\n=== Inicio de generación de vecinos ===")
 
         # Iteramos por cada máquina en la solución:
         for maquina_idx, secuencia in enumerate(solucion):
-            print(f"\n--- Máquina {maquina_idx + 1} (secuencia: {secuencia}) ---")
+            #print(f"\n--- Máquina {maquina_idx + 1} (secuencia: {secuencia}) ---")
 
             # Verificamos pares consecutivos en la máquina (para la permutación de 
             # operaciones):
             for i in range(len(secuencia)-1):
                 op_actual = secuencia[i]
                 op_siguiente = secuencia[i+1]
-                print(f"  Verificando par: Op {op_actual} (crítica: {nueva_info[op_actual]['critica']}) y Op {op_siguiente} (crítica: {nueva_info[op_siguiente]['critica']})")
+                #print(f"  Verificando par: Op {op_actual} (crítica: {nueva_info[op_actual]['critica']}) y Op {op_siguiente} (crítica: {nueva_info[op_siguiente]['critica']})")
 
                 # Si tenemos dos operaciones críticas consecutivas generamos un vecino
                 # con sólo esas dos operaciones permutadas:
                 if nueva_info[op_actual]['critica'] and nueva_info[op_siguiente]['critica']:
                     # Creamos una copia de la solución original
-                    vecino = [list(m) for m in solucion]
+                    # vecino = [list(m) for m in solucion]
                     # Intercambiamos las operaciones
-                    vecino[maquina_idx][i], vecino[maquina_idx][i+1] = vecino[maquina_idx][i+1], vecino[maquina_idx][i]
+                    # vecino[maquina_idx][i], vecino[maquina_idx][i+1] = vecino[maquina_idx][i+1], vecino[maquina_idx][i]
 
                     # Registramos el movimiento
                     movimiento = {
@@ -107,12 +106,70 @@ class Generadora_de_vecinos:
                         'posiciones': (i, i+1)
                     }
 
-                    vecindad.append(vecino)
-                    movimientos.append(movimiento)
-                    print(f"  -> Vecino generado: {vecino[maquina_idx]}")
+                    # vecindad.append(vecino)
+                    vecindad_de_movimientos.append(movimiento)
+                    # print(f"  -> Vecino generado: {vecino[maquina_idx]}")
                 
-                else:
-                    print("  -> No se intercambian (al menos una no es crítica)")
+                '''else:
+                    print("  -> No se intercambian (al menos una no es crítica)")'''
 
-        print("\n=== Fin de generación de vecinos ===")
-        return vecindad, movimientos # Retornamos dos listas: la vecindad y los movimientos.
+                
+                #print(f"\n=== La solución sigue siendo {solucion} ===")
+        print(f"\n=== Se generaron {len(vecindad_de_movimientos)} vecinos ===")
+
+        #print("\n=== Fin de generación de vecinos ===")
+        # return vecindad, movimientos # Retornamos dos listas: la vecindad y los movimientos.
+        return vecindad_de_movimientos
+
+    
+    '''
+    Tenemos una cierta vecindad_de_movimientos, para el Recocido Simulado (y tal vez para otras
+    aplicaciones), nos interesa que una vez elegido uno de los índices de la vecindad_de_movimientos,
+    podamos decodificar al vecino en cuestión para tener una nueva solución que podamos evaluar.
+    '''
+
+    @staticmethod 
+    def decodificar_vecino(idx_vecino, vecindad_de_movimientos, solucion):
+        
+        if idx_vecino >= len(vecindad_de_movimientos):
+            print("\n=== La elección de vecino está fuera de rango. ===")
+
+        # Fijamos el movimiento seleccionado:
+        # Ej.: {'maquina': 1, 'operaciones_intercambiadas': (17, 92), 'posiciones': (7, 8)}
+        movimiento_seleccionado = vecindad_de_movimientos[idx_vecino]
+
+        print(f"\n=== El movimiento seleccionado es: {movimiento_seleccionado} ===")
+
+        solucion_vecina = copy.deepcopy(solucion) # Hacemos una copia profunda de la `solucion`
+                                                  # que modificaremos para crear a su vecino (una
+                                                  # copia superficial no basta porque necesitamos
+                                                  # que la solución también se quede como estaba).
+
+        # Extraemos la información del movimiento
+        maquina = movimiento_seleccionado['maquina']  # OJO: Es 1-based (ej. 1,2,3...)
+        pos_i, pos_j = movimiento_seleccionado['posiciones']
+
+        maquina_idx = maquina - 1 # Lo pasamos como índice (0-based para Python)
+
+        # Intercambiamos las posiciones en la máquina correspondiente
+        solucion_vecina[maquina_idx][pos_i], solucion_vecina[maquina_idx][pos_j] = \
+        solucion_vecina[maquina_idx][pos_j], solucion_vecina[maquina_idx][pos_i]
+
+        # Verificamos que todo esté bien:
+        print(f"\n=== La solución sigue siendo {solucion} ===")
+        print(f"\n=== La solución vecina es {solucion_vecina} ===")
+        if (solucion != solucion_vecina):
+            print(f"\n=== El vecino sí es distinto ===")
+
+
+        return solucion_vecina
+
+    
+    @staticmethod
+    def evaluar_vecino(solucion_vecina, numero_de_maquinas, numero_de_trabajos, lista_de_vertices):
+
+        # Sólo nos interesa el makespan de la solución vecina.
+        makespan_vecino, _, _, _, _, _ = Evaluador_Makespan.calculadora_makespan(numero_de_maquinas, numero_de_trabajos, lista_de_vertices, solucion_vecina)
+
+        print(f"\n === El makespan del vecino es: {makespan_vecino}")
+        return makespan_vecino  
