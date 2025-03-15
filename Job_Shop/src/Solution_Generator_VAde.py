@@ -24,12 +24,12 @@ class Solution_Management:
         planificables = []
 
         # Paso 1: Metemos en la lista de planificables a todas las operaciones iniciales de cada Job.
-        x = 1 # Garantizamos iniciar con el vértice de Id = 1
-        for _ in range(numero_de_trabajos): # |planificables| = num_de_trabajos
-            planificables.append(x) # Agregamos a cada paso la primer operación de cada Job.
-            x += numero_de_maquinas # Si tengo 3 máquinas y 4 jobs, la primer operación del Job1 es 1,
-                                    # la primer operación del Job2 es 1+3=4, la primer operación de Job3
-                                    # es 4+3=7, la primer operación de Job4 es 7+3=10.
+        op_id = 1 # Garantizamos iniciar con el vértice de Id = 1
+
+        for j in range(1, numero_de_trabajos+1): # Sí contamos todos los jobs.
+            # La primera operación de cada job tiene id = 1 + (j-1)*numero_de_maquinas
+            op_id = 1 + (j-1)*numero_de_maquinas
+            planificables.append(op_id)
 
         ''' Lo que sigue es iterativo, por eso viene repetido dentro del while.
 
@@ -57,7 +57,7 @@ class Solution_Management:
         # Esto se repite hasta que |planificables| != 0
         '''
 
-        while (len(planificables) != 0):
+        while planificables:
             operacion_elegida = random.choice(planificables) 
         
             maquina_del_elegido = lista_de_vertices[operacion_elegida].get_maquina()
