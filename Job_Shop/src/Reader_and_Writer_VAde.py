@@ -43,3 +43,10 @@ class Reader_and_Writer_VAde:
         lista_de_vertices.append(vertice_final)
 
         return numero_de_maquinas, numero_de_trabajos, lista_de_vertices
+    
+    
+    
+    @staticmethod 
+    def write (documento):
+        
+        pass

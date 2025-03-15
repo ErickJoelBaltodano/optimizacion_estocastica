@@ -4,10 +4,13 @@ lista de vértices son los mismos que los id's que le corresponden
 a los vértices como objeto.'''
 
 import random
-class Solution_Generator:
+from Calculadora_makespan_VAde import *
+
+class Solution_Management:
+    
     # Clase donde generamos soluciones que son válidas para nuestra implementación del problema del Job Shop.
     @staticmethod
-    def generador_solucion(numero_de_maquinas,numero_de_trabajos,lista_de_vertices):
+    def generar_solucion(numero_de_maquinas,numero_de_trabajos,lista_de_vertices):
 
         solucion = [] # Solución que corresponde al orden en que entran las operaciones en las máquinas
                       # es una lista de listas, con tantas listas como máquinas.
@@ -67,3 +70,21 @@ class Solution_Generator:
                 planificables.append(operacion_elegida+1)
 
         return solucion
+    
+    
+    # Método donde dada una solución generamos una vecindad de soluciones válidas.
+    @staticmethod
+    def generar_vecindad(solucion):
+        vecindad = []
+        '''
+        Inserte aquí el método, por favor
+        '''
+        
+        return vecindad
+    
+    # Método donde validamos una solución con el algoritmo de kahn.
+    @staticmethod
+    def validate_solution(solucion,numero_de_trabajos,numero_de_maquinas):
+        pass
+        
+        
