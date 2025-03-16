@@ -19,5 +19,5 @@ print(lista_de_vertices)
 
 b = Busqueda_Por_Vecindades(numero_de_maquinas,numero_de_trabajos,lista_de_vertices)
 
-
-print(b.random  (100))
+sol, val =b.random  (100)
+print("============================================================================\n MEJOR SOLUCION : {} \n MAKESPAN : {}\n============================================================================".format(sol,val))

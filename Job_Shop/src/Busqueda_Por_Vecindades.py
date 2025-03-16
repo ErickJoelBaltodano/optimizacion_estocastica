@@ -23,26 +23,23 @@ class Busqueda_Por_Vecindades:
         
         
         for _ in range(no_de_iteraciones):
-            mejor_eval, r1, q1, t1, d1, info1 = Evaluador_Makespan.calculadora_makespan(self.numero_de_maquinas, self.numero_de_trabajos, 
-                                                                             self.lista_de_vertices, mejor_sol)
+            mejor_eval, r, q, info = Evaluador_Makespan.calculadora_makespan(self.numero_de_maquinas, self.numero_de_trabajos, self.lista_de_vertices, mejor_sol)
             
-            vecindad, m = Generadora_de_vecinos.construir_vecindad(mejor_sol, mejor_eval, r1, q1, info1)
+            print ("++++++++++++++++++++++++++++++++++++++++++")
+            print ("Sol {}".format(mejor_sol))
+            vecindad = Generadora_de_vecinos.construir_vecindad(mejor_sol, mejor_eval, r, q, info)
             
             # Escogemos un vecino de la vecindad actual
             if vecindad != []:
                 # Caso normal.
-                vecino = random.choice (vecindad)
+                vecino = Generadora_de_vecinos.decodificar_vecino(random.randint(0, len (vecindad)-1), vecindad, mejor_sol)
+                
             else:
                 
-                # Caso donde la solucion actual no tiene vecinos.
-                temp =Solution_Management.generar_solucion(self.numero_de_maquinas,self.numero_de_trabajos,self.lista_de_vertices)
-                eval_temp ,r,q,t,d,info = Evaluador_Makespan.calculadora_makespan(self.numero_de_maquinas,self.numero_de_trabajos,self.lista_de_vertices,temp)
-                vecindad, m = Generadora_de_vecinos.construir_vecindad(temp,eval_temp,r,q,info)
-                vecino = random.choice(vecindad)
+                raise(ValueError("ERROR : Esta mal en algo, EN ALGO (la vecindad del vecino {} es vacía.)".format(mejor_sol)) )
                 
             # Evaluamos al vecino.
-            eval_vecino, r2,q2,t2,d2,info2 = Evaluador_Makespan.calculadora_makespan(self.numero_de_maquinas,self.numero_de_trabajos,
-                                                                                   self.lista_de_vertices,vecino)
+            eval_vecino, r_1, q_1, info_1 = Evaluador_Makespan.calculadora_makespan(self.numero_de_maquinas, self.numero_de_trabajos, self.lista_de_vertices, vecino)
             
             
             
@@ -51,12 +48,7 @@ class Busqueda_Por_Vecindades:
                 
                 mejor_sol = vecino
                 mejor_eval = eval_vecino         
-            
-            
-            
-            
-            
-            
+ 
         return mejor_sol,mejor_eval
         
             

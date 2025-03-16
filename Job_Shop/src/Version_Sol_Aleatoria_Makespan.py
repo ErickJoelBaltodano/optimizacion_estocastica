@@ -5,7 +5,7 @@ from Calculadora_makespan_VAde import *
 
 numero_de_maquinas, numero_de_trabajos, lista_de_vertices =Reader_and_Writer_VAde.read("./Ejemplares/prueba3.txt")
 
-numero_de_maquinas, numero_de_trabajos, lista_de_vertices =Reader_and_Writer_VAde.read(ejemplar)
+#numero_de_maquinas, numero_de_trabajos, lista_de_vertices =Reader_and_Writer_VAde.read(ejemplar)
 
 #print(lista_de_vertices)
 

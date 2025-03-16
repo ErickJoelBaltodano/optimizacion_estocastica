@@ -49,10 +49,10 @@ class Torneo:
         
         
         ''' 
-        contendiente1, r1, q1, t1, d1, info1 = Evaluador_Makespan.calculadora_makespan(numero_de_maquinas, numero_de_trabajos, 
+        contendiente1, r1, q1,  info1 = Evaluador_Makespan.calculadora_makespan(numero_de_maquinas, numero_de_trabajos, 
                                                                              lista_de_vertices, poblacion[numero1])
         
-        contendiente2, r2, q2, t2, d2, info2 = Evaluador_Makespan.calculadora_makespan(numero_de_maquinas, numero_de_trabajos, 
+        contendiente2, r2, q2,  info2 = Evaluador_Makespan.calculadora_makespan(numero_de_maquinas, numero_de_trabajos, 
                                                                              lista_de_vertices, poblacion[hijo1])
         
        
@@ -60,10 +60,10 @@ class Torneo:
         if (contendiente1 > contendiente2):
             self.poblacion[numero1]= hijo1
             
-        contendiente1, r1, q1, t1, d1, info1 = Evaluador_Makespan.calculadora_makespan(numero_de_maquinas, numero_de_trabajos, 
+        contendiente1, r1, q1,  info1 = Evaluador_Makespan.calculadora_makespan(numero_de_maquinas, numero_de_trabajos, 
                                                                              lista_de_vertices, poblacion[numero2])
         
-        contendiente2, r2, q2, t2, d2, info2 = Evaluador_Makespan.calculadora_makespan(numero_de_maquinas, numero_de_trabajos, 
+        contendiente2, r2, q2, info2 = Evaluador_Makespan.calculadora_makespan(numero_de_maquinas, numero_de_trabajos, 
                                                                              lista_de_vertices, poblacion[hijo2])
         
        
