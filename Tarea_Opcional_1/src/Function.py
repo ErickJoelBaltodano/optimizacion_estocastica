@@ -2,23 +2,29 @@ import math
 class Function:
 
     @staticmethod
-    def rastrigin(dimension:int , valores:list[float]):
+    def rastrigin(valores:list[float]):
         A = 10.0
+        dimension = len(valores)
         return A * dimension + sum([(xi**2 - A * math.cos(2 * math.pi * xi)) for xi in valores])
 
     @staticmethod
-    def schwefel( dimension, valores):
+    def schwefel(valores):
+        dimension = len(valores)
         return 418.9829 * dimension - sum([xi * math.sin(math.sqrt(abs(xi))) for xi in valores])
 
     @staticmethod
-    def michalewicz(dimension, valores):
+    def michalewicz( valores):
+        dimension = len(valores)
+        
         m = 10.0
         return -sum([math.sin(xi) * math.sin(i * xi**2 / math.pi)**(2 * m) for i, xi in enumerate(valores, 1)])
 
 
 
     @staticmethod
-    def levy(dimension, valores):
+    def levy( valores):
+        dimension = len(valores)
+        
         w = [(1 + (xi - 1) / 4) for xi in valores]
         term1 = math.sin(math.pi * w[0])**2
         term3 = (w[-1] - 1)**2 * (1 + math.sin(2 * math.pi * w[-1])**2)
@@ -27,7 +33,9 @@ class Function:
         return term1 + sum_term + term3
 
     @staticmethod
-    def zakharov( dimension, valores):
+    def zakharov(  valores):
+        dimension = len(valores)
+        
         sum1 = sum([xi**2 for xi in valores])
         sum2 = sum([0.5 * i * xi for i, xi in enumerate(valores, 1)])
         
@@ -35,12 +43,16 @@ class Function:
 
 
     @staticmethod
-    def sphere(dimension, valores):
+    def sphere( valores):
+        dimension = len(valores)
+        
         # La función Sphere es simplemente la suma de los cuadrados de los valores.
         return sum([xi**2 for xi in valores])
 
     @staticmethod
-    def ackley(dimension, valores):
+    def ackley(valores):
+        dimension = len(valores)
+        
         a = 20
         b = 0.2
         c = 2 * math.pi
@@ -50,20 +62,23 @@ class Function:
         return -a * math.exp(-b * math.sqrt(sum1)) - math.exp(sum2) + a + math.e
 
     @staticmethod
-    def griewank(dimension, valores):
+    def griewank( valores):
+        dimension = len(valores)
+        
         sum_part = sum([xi**2 / 4000 for xi in valores])
         prod_part = math.prod([math.cos(xi / math.sqrt(i+1)) for i, xi in enumerate(valores)])
         
         return sum_part - prod_part + 1
 
     @staticmethod
-    def rosenbrock(dimension, valores):
-        # La función Rosenbrock se evalúa sobre pares consecutivos de valores
+    def rosenbrock( valores):
+        dimension = len(valores)
         return sum([100 * (valores[i+1] - valores[i]**2)**2 + (1 - valores[i])**2 for i in range(dimension - 1)])
 
 
     @staticmethod 
-    def prueba (dimension,valores ):
+    def prueba (valores):
+        dimension = len(valores)
         a = 0
         for x in valores:
             a += x

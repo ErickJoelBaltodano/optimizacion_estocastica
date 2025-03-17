@@ -21,7 +21,7 @@ class Random_Solution_Generator:
         return c
 
     
-    #Método donde generamos una lista de reales.
+    #Método donde generamos una lista de reales dados los límites de cada dimensión.
     @staticmethod
     def random_real_list(lenght,limites):
         inferior= 0
@@ -29,7 +29,6 @@ class Random_Solution_Generator:
         lista_final = []
         dimension = int (len(limites)/2)
         for _ in range(dimension):
-            
             lista_final.append(Random_Solution_Generator.random_real_generate(lenght,limites[inferior],limites[superior]))
             inferior += 2
             superior += 2
@@ -37,9 +36,7 @@ class Random_Solution_Generator:
     
     @staticmethod
     def n_puntos(n,longitud_total):
-       
-        
-
+ 
         lista = []
         for _ in range (n):
             lista.append(True)
