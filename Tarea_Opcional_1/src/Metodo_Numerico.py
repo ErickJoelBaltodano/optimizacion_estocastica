@@ -36,3 +36,18 @@ class Metodo_Numerico:
                     H[i, j] = (f(x_pp) - f(x_pm) - f(x_mp) + f(x_mm)) / (4 * h**2)
         
         return H
+    
+    
+    def gradiente(f, x, h=1e-5):
+
+        n = len(x)
+        grad = np.zeros(n)
+        for i in range(n):
+            x_plus = np.copy(x)
+            x_minus = np.copy(x)
+            x_plus[i] += h
+            x_minus[i] -= h
+            grad[i] = (f(x_plus) - f(x_minus)) / (2 * h)
+        return grad
+
+
