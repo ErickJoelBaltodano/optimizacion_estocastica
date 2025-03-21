@@ -53,9 +53,9 @@ class Evaluador_Makespan:
                     info[op]['pred_maquina'] = operaciones_maquina[i-1]
                     info[operaciones_maquina[i-1]]['suc_maquina'] = op
         
-        '''print("\n--- Estructura 'info' construida ---")
+        print("\n--- Estructura 'info' construida ---")
         for op, datos in info.items():
-            print(f"Op {op}: {datos}")'''
+            print(f"Op {op}: {datos}")
         
         return info
 

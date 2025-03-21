@@ -2,8 +2,11 @@ from Reader_and_Writer_VAde import *
 from Vertice_VAde import *
 from Solution_Generator_VAde import *
 from Calculadora_makespan_VAde import *
+import sys 
 
-ejemplar = input("Escribe el nombre del ejemplar (no olvides el .txt):\t")
+#ejemplar = input("Escribe el nombre del ejemplar (no olvides el .txt):\t")
+ejemplar = sys.argv[1] # Para evitar preguntarle al usuario el ejemplar.
+random.seed(10)
 
 numero_de_maquinas, numero_de_trabajos, lista_de_vertices =Reader_and_Writer_VAde.read(ejemplar)
 
