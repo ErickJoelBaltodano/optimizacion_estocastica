@@ -8,46 +8,6 @@ class Reparadora:
     factible y para verificar factibilidad.
     '''
 
-    # Método para actualizar las listas en el proceso de reparación una vez obtenida una 
-    # operación en la lista de `planificables`.
-    @staticmethod
-    def actualizacion_de_listas(op_id, info, etiquetadas, sigue_en_job, sigue_en_maquina):
-        
-        etiquetadas.append(op_id) # Agregamos la operación planificable a la lista de
-                                  # operaciones etiquetadas.
-                
-        info[op_id]['completada'] = True # Marcamos a la operación como completada
-
-        # Si ya la completamos, independientemente de si tiene sucesores en máquina o job,
-        # la tenemos que quitar de las operaciones por planificar.
-        sigue_en_job.remove(op_id) 
-        sigue_en_maquina.remove(op_id)
-
-        if info[op_id]['suc_job'] is None:
-            pass    # Si la operación no tiene un sucesor en job no hacemos
-                    # nada y nos vamos a preguntarle a la operación si tiene un sucesor
-                    # en máquina.
-        else:
-            # Si la operación sí tiene un sucesor en job:
-            op_id_suc_job = info[op_id]['suc_job'] 
-            #sigue_en_job.remove(op_id) 
-            sigue_en_job.append(op_id_suc_job)
-            # Actualizamos la lista de las que siguen por planificarse en job de acuerdo al orden dado
-            # por los jobs (quitamos la ya etiquetada y ponemos a su sucesora).
-
-        if info[op_id]['suc_maquina'] is None:
-            pass    # Si la operación no tiene un sucesor en máquina, nos saltamos el siguiente
-                    # bloque del `else`
-
-        else:
-            # Si la operación sí tiene un sucesor en máquina:
-            op_id_suc_maquina = info[op_id]['suc_maquina'] 
-            #sigue_en_maquina.remove(op_id) 
-            sigue_en_maquina.append(op_id_suc_maquina)
-            # Actualizamos la lista de las que siguen por planificarse en máquina de acuerdo al orden dado
-            # por las máquinas (quitamos la ya etiquetada y ponemos a su sucesora).
-
-        return # Se puede quitar, no está haciendo nada (lo dejo por costumbre).
 
     @staticmethod
     def reparacion(solucion, lista_de_vertices):
@@ -65,9 +25,6 @@ class Reparadora:
         # las máquinas.
 
         planificables = [] # Lista de operaciones en la intersección de O_J y O_M
-
-        etiquetadas = [] # Lista de operaciones que ya han pasado por el proceso de
-                         # reparación i.e. ya han sido planificadas.
 
         
         # Agregamos las primeras operaciones en los jobs a `sigue_en_job` (dados por
@@ -103,9 +60,39 @@ class Reparadora:
 
             # Caso donde `planificables` no es una lista vacía.
             for operacion_idx, op_id in enumerate(planificables):
-                Reparadora.actualizacion_de_listas(op_id, info, etiquetadas, sigue_en_job, sigue_en_maquina)
-                                
 
+                # Se tiene que quitar a la operación de O_J y O_M:
+                sigue_en_job.remove(op_id) # Se quita de O_J
+                sigue_en_maquina.remove(op_id) # Se quita de O_M
+
+                # Marcamos a la operación como completada
+                info[op_id]['completada'] = True 
+
+                # Luego, se le pregunta a la op_id si tiene sucesores en job y máquina.
+
+                if info[op_id]['suc_job'] is None:
+                    pass    # Si la operación no tiene un sucesor en job no hacemos
+                            # nada y nos vamos a preguntarle a la operación si tiene un sucesor
+                            # en máquina.
+                else:
+                    # Si la operación sí tiene un sucesor en job:
+                    op_id_suc_job = info[op_id]['suc_job'] 
+                    sigue_en_job.append(op_id_suc_job)
+                    # Actualizamos la lista de las que siguen por planificarse en job de acuerdo al orden dado
+                    # por los jobs (quitamos la ya etiquetada y ponemos a su sucesora).
+
+                if info[op_id]['suc_maquina'] is None:
+                    pass    # Si la operación no tiene un sucesor en máquina, nos saltamos el siguiente
+                            # bloque del `else`
+
+                else:
+                    # Si la operación sí tiene un sucesor en máquina:
+                    op_id_suc_maquina = info[op_id]['suc_maquina'] 
+                    sigue_en_maquina.append(op_id_suc_maquina)
+                    # Actualizamos la lista de las que siguen por planificarse en máquina de acuerdo al orden dado
+                    # por las máquinas (quitamos la ya etiquetada y ponemos a su sucesora).                
+                                
+            # Caso feo:
             while planificables == False: # Si `planificables` es vacío (pero aún hay operaciones en
                                           # máquinas y/o jobs que falten por planificar).
 
@@ -114,8 +101,9 @@ class Reparadora:
                                                                    # en la lista de los jobs.
                 
                 # Vamos a la máquina que corresponde a la operación que elegimos:
-                maquina_op_elegida_idx = info[operacion_elegida_id]['maquina'] - 1 
-                # `solucion[m-1]` es la lista que corresponde a la máquina m
+                maquina_op_elegida_idx = info[operacion_elegida_id]['maquina']  
+                # `solucion[m-1]` es la lista que corresponde a la máquina m-1 (las operaciones en `ìnfo` 
+                # se cuentan desde 0)
 
                 maquina_elegida = solucion[maquina_op_elegida_idx] # Lista de operaciones en la máquina
                                                                    # elegida. Ej.: [1, 4, 8]
@@ -127,37 +115,45 @@ class Reparadora:
                 # posición disponible después de la última operación ya planificada.
                 for operacion_idx, op_id in enumerate(maquina_elegida):
                     if info[op_id]['completada']: 
-                        continue    # Si la operación en la que vamos ya está en `etiquetadas`, i.e. su 
+                        continue    # Si la operación en la que vamos ya fue planificada i.e. su 
                                     # flag está como `completada` == True, nos vamos con la que sigue.
 
-                    maquina_elegida[operacion_idx], maquina_elegida[op_elegida_idx] = \
-                    maquina_elegida[op_elegida_idx], maquina_elegida[operacion_idx]
+                    # Para hacer el procedimiento descrito en 'INSTRUCCIONES':
+                    op_elegida = op_elegida_id
+                    op_cambio = op_id 
+                    pred_maq_op_elegida = info[op_elegida]['pred_maquina']
+                    pred_maq_op_cambio = info[op_cambio]['pred_maquina']
+                    suc_maq_op_elegida = info[op_elegida]['suc_maquina']
+                    suc_maq_op_cambio = info[op_cambio]['suc_maquina']
 
-                    # Cambiamos en `info` lo referente a sucesores y predecesores en máquina de las 
-                    # operaciones intercambiadas.
-                    info[operacion_elegida_id]['pred_maquina'], info[operacion_elegida_id]['suc_maquina'], \
-                    info[op_id]['pred_maquina'], info[op_id]['suc_maquina'] = \
-                    info[op_id]['pred_maquina'], info[op_id]['suc_maquina'], \
-                    info[operacion_elegida_id]['pred_maquina'], info[operacion_elegida_id]['suc_maquina']
+                    # Hacemos los 8 cambios:
+                    info[pred_maq_op_cambio]['suc_maquina'] = op_elegida #1
+                    info[op_cambio]['pred_maquina'] = pred_maq_op_elegida #2
+                    info[op_cambio]['suc_maquina'] = suc_maq_op_elegida #3
+                    info[suc_maq_op_cambio]['pred_maquina'] = op_elegida #4
+                    info[pred_maq_op_elegida]['suc_maquina'] = op_cambio #5
+                    info[op_elegida]['pred_maquina'] = pred_maq_op_cambio #6
+                    info[op_elegida]['suc_maquina'] = suc_maq_op_cambio #7
+                    info[suc_maq_op_elegida]['pred_maquina'] = op_cambio #8
 
-                    # Agregamos a la lista de operaciones planificables por máquina a la operación elegida.
-                    sigue_en_maquina.append(op_elegida_id)
-                    sigue_en_maquina.remove(op_id)
+                    # Hacemos el cambio a nivel solución (lista de máquinas):
+                    #PENDIENTE
 
+                    # Modificamos O_M
+                    sigue_en_maquina.remove(op_cambio)
+                    sigue_en_maquina.append(op_elegida)
+
+                    # Para este momento, O_J *intersección* O_J ya no es el vacío.
                     planificables = list(set(sigue_en_job) & set(sigue_en_maquina))
-
-                    # Hasta aquí (si todo salió bien) se supone que la intersección de O_J y O_M ya no es 
-                    # vacía (y tiene como único elemento a `op_elegida_id`)
                     # Pero esto se va a cotejar hasta la siguiente iteración porque aquí termina este bloque.
 
-                    break # Salimos del `for`
-                         
+                    break # # Salimos del `for`
 
-
+                        
             # Algunos prints para ver cómo va la cosa:
             print('planificables', planificables)
             print('etiquetadas', etiquetadas)
             print('sigue_en_job', sigue_en_job)
             print('sigue_en_maquina', sigue_en_maquina)
         
-        return etiquetadas
+        return solucion # Quiero que regrese la solución ya reparada.
