@@ -48,7 +48,8 @@ class Reparadora:
         # falte por planificar.
         # Así que vamos a repetir el algoritmo de reparación mientras se cumpla la negación de
         # lo anterior.
-        while (planificables or (sigue_en_job or sigue_en_maquina)):   
+        # Esta triple validación se hace en 3 pasos.
+        while len(sigue_en_job) > 0 or len(sigue_en_maquina) > 0:  # Condición modificada 
 
             # Lista de las operaciones planificables; sus elementos están en O_J y O_M
             planificables = list(set(sigue_en_job) & set(sigue_en_maquina))
@@ -102,18 +103,22 @@ class Reparadora:
                                 
             # Caso feo:
             if not planificables:
+
+                if not sigue_en_job:  # Validación añadida
+                    break
+
                 print("\nEstamos en el caso feo...\n")                
 
                 operacion_elegida_id = random.choice(sigue_en_job)
                 
-                # Obtener la máquina de la operación elegida (índice 0-based ya)
-                maquina_op_elegida_idx = info[operacion_elegida_id]['maquina']  
+                # Obtener la máquina (índice 0-based)
+                maquina_op_elegida_idx = info[operacion_elegida_id]['maquina']
                 maquina_elegida = solucion[maquina_op_elegida_idx]
                 
                 print(f"Máquina de la operación elegida {operacion_elegida_id}: {maquina_op_elegida_idx}")
                 print(f"La máquina elegida es: {maquina_elegida}")
 
-                # Encontrar la primera operación NO completada en la máquina
+                # Encontrar la primera operación no completada para intercambiar
                 op_cambio_idx = None
                 for idx, op_id in enumerate(maquina_elegida):
                     if not info[op_id]['completada']:
@@ -123,20 +128,17 @@ class Reparadora:
                 if op_cambio_idx is not None:
                     # Intercambiar posiciones
                     op_elegida_idx = maquina_elegida.index(operacion_elegida_id)
-                    maquina_elegida[op_elegida_idx], maquina_elegida[op_cambio_idx] = maquina_elegida[op_cambio_idx], maquina_elegida[op_elegida_idx]
+                    maquina_elegida[op_elegida_idx], maquina_elegida[op_cambio_idx] = \
+                        maquina_elegida[op_cambio_idx], maquina_elegida[op_elegida_idx]
 
-                    # Reconstruir TODAS las relaciones de la máquina
+                    # Reconstruir relaciones de TODA la máquina
                     for i in range(len(maquina_elegida)):
                         current_op = maquina_elegida[i]
-                        # Predecesor
                         info[current_op]['pred_maquina'] = maquina_elegida[i-1] if i > 0 else None
-                        # Sucesor
                         info[current_op]['suc_maquina'] = maquina_elegida[i+1] if i < len(maquina_elegida)-1 else None
 
                     # Actualizar sigue_en_maquina
-                    # 1. Eliminar todas las ops de esta máquina
                     sigue_en_maquina = [op for op in sigue_en_maquina if op not in maquina_elegida]
-                    # 2. Agregar la primera no completada
                     for op in maquina_elegida:
                         if not info[op]['completada']:
                             if op not in sigue_en_maquina:
@@ -144,10 +146,9 @@ class Reparadora:
                             break
 
                     print(f"Modificación dentro del caso feo de O_M: {sigue_en_maquina}")
-                    
-                    # Actualizar planificables
+
+                    # Forzar continuidad del bucle principal
                     planificables = list(set(sigue_en_job) & set(sigue_en_maquina))
-                    break
 
 
         print("La nueva solución es: ", solucion)

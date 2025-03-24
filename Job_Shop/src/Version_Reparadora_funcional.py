@@ -3,14 +3,19 @@ from Vertice_VAde import *
 from Solution_Generator_VAde import *
 from Calculadora_makespan_VAde import *
 from Generadora_de_vecinos import *
-from Reparadora_sugerencia_Deepseek import *
+from Reparadora_que_funciona import *
 import random
 import sys 
+import time  # <-- Añadir esta línea
 
+# Obtener una semilla única basada en el tiempo actual
+semilla = int(time.time() * 1000)  # <-- Multiplicar por 1000 para mayor precisión
+random.seed(semilla)
+
+print(f"\nSemilla usada para esta ejecución: {semilla}")  # <-- Imprimir la semilla
 
 #ejemplar = input("Escribe el nombre del ejemplar (no olvides el .txt):\t")
 ejemplar = sys.argv[1] # Para evitar preguntarle al usuario el ejemplar.
-random.seed(10)
 
 numero_de_maquinas, numero_de_trabajos, lista_de_vertices =Reader_and_Writer_VAde.read(ejemplar)
 
