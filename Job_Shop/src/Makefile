@@ -9,7 +9,11 @@ generar_sol_aleatoria_y_makespan:
 generar_vecindad:
 	@python3 Version_Generadora_Vecinos.py $(EJEMPLAR)
 
-EJEMPLAR = swv10.txt
+EJEMPLAR = prueba3.txt 
 
-reparadora_prueba:
-	@python3 Version_Reparadora.py $(EJEMPLAR)
+reparadora_IA:
+	@python3 Version_ReparadoraIA.py $(EJEMPLAR)
+
+reparadora_prueba2:
+	@python3 Version_Reparadora2.py $(EJEMPLAR)
+

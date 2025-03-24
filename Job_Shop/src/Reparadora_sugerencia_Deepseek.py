@@ -10,13 +10,13 @@ class Reparadora:
 
 
     @staticmethod
-    def reparacion(solucion, lista_de_vertices):
+    def reparacion(solucion, numero_de_maquinas, numero_de_trabajos, lista_de_vertices):
 
-        numero_de_maquinas = len(solucion)
-        numero_de_trabajos = len(solucion[0])
         info = Evaluador_Makespan.construct_info(numero_de_maquinas, numero_de_trabajos, lista_de_vertices, solucion)
 
         print(info)
+
+        completadas = [] # ESTO ES SÓLO PARA EL DEBUGGING
         
         sigue_en_job = [] # Es la O_J del artículo.
         sigue_en_maquina = [] # Es la O_M del artículo.
@@ -48,15 +48,22 @@ class Reparadora:
         # falte por planificar.
         # Así que vamos a repetir el algoritmo de reparación mientras se cumpla la negación de
         # lo anterior.
-        while (planificables or (sigue_en_job or sigue_en_maquina)): 
+        while (planificables or (sigue_en_job or sigue_en_maquina)):   
 
             # Lista de las operaciones planificables; sus elementos están en O_J y O_M
             planificables = list(set(sigue_en_job) & set(sigue_en_maquina))
 
-            # Imprimir el estado de `info` en cada iteración
+            # Algunos prints para ver cómo va la cosa:
+            print('\ncompletadas', completadas)
+            print('\nsigue_en_job', sigue_en_job)
+            print('\nsigue_en_maquina', sigue_en_maquina) 
+            print('\nplanificables', planificables)
+            print(f"\nLa solución (en reparación) es: {solucion}")  
+
+            '''# Imprimir el estado de `info` en cada iteración
             print("Estado de info en esta iteración:")
             for op_id, datos in info.items():
-                print(f"Operación {op_id}: {datos}")
+                print(f"Operación {op_id}: {datos}")'''
 
             # Caso donde `planificables` no es una lista vacía.
             for operacion_idx, op_id in enumerate(planificables):
@@ -67,6 +74,7 @@ class Reparadora:
 
                 # Marcamos a la operación como completada
                 info[op_id]['completada'] = True 
+                completadas.append(op_id)
 
                 # Luego, se le pregunta a la op_id si tiene sucesores en job y máquina.
 
@@ -93,67 +101,55 @@ class Reparadora:
                     # por las máquinas (quitamos la ya etiquetada y ponemos a su sucesora).                
                                 
             # Caso feo:
-            while planificables == False: # Si `planificables` es vacío (pero aún hay operaciones en
-                                          # máquinas y/o jobs que falten por planificar).
+            if not planificables:
+                print("\nEstamos en el caso feo...\n")                
 
-                operacion_elegida_id = random.choice(sigue_en_job) # Elegimos alguna operación al azar
-                                                                   # de aquellas que nos falte planificar
-                                                                   # en la lista de los jobs.
+                operacion_elegida_id = random.choice(sigue_en_job)
                 
-                # Vamos a la máquina que corresponde a la operación que elegimos:
+                # Obtener la máquina de la operación elegida (índice 0-based ya)
                 maquina_op_elegida_idx = info[operacion_elegida_id]['maquina']  
-                # `solucion[m-1]` es la lista que corresponde a la máquina m-1 (las operaciones en `ìnfo` 
-                # se cuentan desde 0)
-
-                maquina_elegida = solucion[maquina_op_elegida_idx] # Lista de operaciones en la máquina
-                                                                   # elegida. Ej.: [1, 4, 8]
+                maquina_elegida = solucion[maquina_op_elegida_idx]
                 
-                # Índice de la operación elegida.
-                op_elegida_idx = maquina_elegida.index(operacion_elegida_id)
+                print(f"Máquina de la operación elegida {operacion_elegida_id}: {maquina_op_elegida_idx}")
+                print(f"La máquina elegida es: {maquina_elegida}")
 
-                # Vamos a reordenar a la solución mandando a la `operacion_elegida_id` en la primera
-                # posición disponible después de la última operación ya planificada.
-                for operacion_idx, op_id in enumerate(maquina_elegida):
-                    if info[op_id]['completada']: 
-                        continue    # Si la operación en la que vamos ya fue planificada i.e. su 
-                                    # flag está como `completada` == True, nos vamos con la que sigue.
+                # Encontrar la primera operación NO completada en la máquina
+                op_cambio_idx = None
+                for idx, op_id in enumerate(maquina_elegida):
+                    if not info[op_id]['completada']:
+                        op_cambio_idx = idx
+                        break
+                
+                if op_cambio_idx is not None:
+                    # Intercambiar posiciones
+                    op_elegida_idx = maquina_elegida.index(operacion_elegida_id)
+                    maquina_elegida[op_elegida_idx], maquina_elegida[op_cambio_idx] = maquina_elegida[op_cambio_idx], maquina_elegida[op_elegida_idx]
 
-                    # Para hacer el procedimiento descrito en 'INSTRUCCIONES':
-                    op_elegida = op_elegida_id
-                    op_cambio = op_id 
-                    pred_maq_op_elegida = info[op_elegida]['pred_maquina']
-                    pred_maq_op_cambio = info[op_cambio]['pred_maquina']
-                    suc_maq_op_elegida = info[op_elegida]['suc_maquina']
-                    suc_maq_op_cambio = info[op_cambio]['suc_maquina']
+                    # Reconstruir TODAS las relaciones de la máquina
+                    for i in range(len(maquina_elegida)):
+                        current_op = maquina_elegida[i]
+                        # Predecesor
+                        info[current_op]['pred_maquina'] = maquina_elegida[i-1] if i > 0 else None
+                        # Sucesor
+                        info[current_op]['suc_maquina'] = maquina_elegida[i+1] if i < len(maquina_elegida)-1 else None
 
-                    # Hacemos los 8 cambios:
-                    info[pred_maq_op_cambio]['suc_maquina'] = op_elegida #1
-                    info[op_cambio]['pred_maquina'] = pred_maq_op_elegida #2
-                    info[op_cambio]['suc_maquina'] = suc_maq_op_elegida #3
-                    info[suc_maq_op_cambio]['pred_maquina'] = op_elegida #4
-                    info[pred_maq_op_elegida]['suc_maquina'] = op_cambio #5
-                    info[op_elegida]['pred_maquina'] = pred_maq_op_cambio #6
-                    info[op_elegida]['suc_maquina'] = suc_maq_op_cambio #7
-                    info[suc_maq_op_elegida]['pred_maquina'] = op_cambio #8
+                    # Actualizar sigue_en_maquina
+                    # 1. Eliminar todas las ops de esta máquina
+                    sigue_en_maquina = [op for op in sigue_en_maquina if op not in maquina_elegida]
+                    # 2. Agregar la primera no completada
+                    for op in maquina_elegida:
+                        if not info[op]['completada']:
+                            if op not in sigue_en_maquina:
+                                sigue_en_maquina.append(op)
+                            break
 
-                    # Hacemos el cambio a nivel solución (lista de máquinas):
-                    #PENDIENTE
-
-                    # Modificamos O_M
-                    sigue_en_maquina.remove(op_cambio)
-                    sigue_en_maquina.append(op_elegida)
-
-                    # Para este momento, O_J *intersección* O_J ya no es el vacío.
+                    print(f"Modificación dentro del caso feo de O_M: {sigue_en_maquina}")
+                    
+                    # Actualizar planificables
                     planificables = list(set(sigue_en_job) & set(sigue_en_maquina))
-                    # Pero esto se va a cotejar hasta la siguiente iteración porque aquí termina este bloque.
+                    break
 
-                    break # # Salimos del `for`
 
-                        
-            # Algunos prints para ver cómo va la cosa:
-            print('planificables', planificables)
-            print('etiquetadas', etiquetadas)
-            print('sigue_en_job', sigue_en_job)
-            print('sigue_en_maquina', sigue_en_maquina)
+        print("La nueva solución es: ", solucion)
         
         return solucion # Quiero que regrese la solución ya reparada.

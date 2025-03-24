@@ -3,7 +3,7 @@ from Vertice_VAde import *
 from Solution_Generator_VAde import *
 from Calculadora_makespan_VAde import *
 from Generadora_de_vecinos import *
-from Reparadora_de_sols import *
+from Reparadora_de_soluciones import *
 import random
 import sys 
 
