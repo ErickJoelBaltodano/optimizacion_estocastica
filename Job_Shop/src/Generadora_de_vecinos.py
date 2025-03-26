@@ -21,7 +21,11 @@ class Generadora_de_vecinos:
         nueva_info = {}
 
         for op_id, datos in info.items():
+            print("Operaciones en info:", info.keys())
+            print("Claves en r:", r.keys())
+            print("Claves en q:", q.keys())
             nueva_info[op_id] = {
+                
                 **datos, # Copiamos igualito lo que ya estaba
                 'r': r[op_id], # El ri
                 'q': q[op_id], # El qi

@@ -53,19 +53,6 @@ class Busqueda_Por_Vecindades:
         
             
 
-    def tabu (no_de_comparaciones:int,documento_de_entrada:str,documento_de_salida:str):
-        mejor_sol = None
-        mejor_eval = None
-        #Generamos una solucion inicial.
-        #Exploramos la vecindad.
-        #Baneamos los elementos ya explorados.
-        
-        #Regresamos el mejor resultado encontrado.
-        
-        '''Mejor no, está muy dificil :´v '''
-        
-        return mejor_sol,mejor_eval
-
     #Método donde aproximamos una mejor solución para el problema job-shop con el método de recocido simulado 
     def recocido_simulado(self,no_de_evaluaciones:int,temp_inicial = 10000,factor_de_enfriamiento =.95, sol_actual = None):
         
