@@ -24,6 +24,8 @@ class Generadora_de_vecinos:
             print("Operaciones en info:", info.keys())
             print("Claves en r:", r.keys())
             print("Claves en q:", q.keys())
+            print (type(q))
+            print (op_id)
             nueva_info[op_id] = {
                 
                 **datos, # Copiamos igualito lo que ya estaba

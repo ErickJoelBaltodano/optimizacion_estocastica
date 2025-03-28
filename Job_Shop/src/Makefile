@@ -10,13 +10,17 @@ info:
 	@echo "make job-shop DOCUMENTO=nombre_del_ejemplar"
 	@echo "El ejemplar debe estar en la carpeta 'Ejemplares'"
 	@echo "Ejemplo:"
-	@echo "make job-shop DOCUMENTO=swv10"
+	@echo "make Entrega1 DOCUMENTO=swv10"
 
 
 
 # Ejecutar la búsqueda por vecindades con un ejemplar específico
-job-shop:
-	@python3 Main.py $(DOCUMENTO)
+Entrega1:
+	@python3 Main_Entrega1.py $(DOCUMENTO)
+
+
+Entrega2:
+	@python3 Main_Entrega2.py $(DOCUMENTO)
 
 
 clean-results:
