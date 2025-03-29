@@ -255,33 +255,5 @@ class Evaluador_Makespan:
         makespan_reverso = max(q.values()) # El 'makespan' del recorrido al revés
         print(f"\n--- Makespan (reverso) calculado: {makespan_reverso} ---")
 
-        return makespan, r, q, info
-
-
-'''
-M1 (J3, r q)(J2, r, q)...
-M2
-...
-'''
-
-'''
-tabu = [(M3, ()(), k=10)]
-'''
-
-'''
-[[17, 1, 24, 13, 30, 10], 
-[6, 22, 26, 3, 15, 19], 
-[2, 27, 18, 23, 11, 9], 
-[21, 7, 29, 4, 14, 20], 
-[16, 28, 8, 12, 25, 5]]
-'''
-
-'''
-[[17, 24, 1, 13, 30, 10], 
-[6, 22, 26, 3, 15, 19], 
-[2, 27, 18, 23, 11, 9], 
-[21, 7, 29, 4, 14, 20], 
-[16, 28, 8, 12, 25, 5]]
-'''
-
-# tabu = [(M1, (J1, 1) (J3, 2), k=3+rand(0, L)), ...]
+        return makespan, r, q, t, d, info # Por si en algún momento de la vida sirve, le pedí también que retornara los
+                                          # diccionarios con las t's y d's (como recordatorio: q = t + d)

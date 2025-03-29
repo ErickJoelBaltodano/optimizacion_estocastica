@@ -15,15 +15,32 @@ class Busqueda_Por_Vecindades:
         self.numero_de_maquinas = numero_de_maquinas
         self.numero_de_trabajos = numero_de_trabajos
         self.lista_de_vertices = lista_de_vertices
+        
+    def random (self,no_de_iteraciones):
+        mejor_sol = None
+        mejor_eval = None
+        for _ in range(no_de_iteraciones):
+            sol_temporal = Solution_Management.generar_solucion(self.numero_de_maquinas,self.numero_de_trabajos,self.lista_de_vertices)
+            eval_temporal ,_, _, _,_,_ = Evaluador_Makespan.calculadora_makespan(self.numero_de_maquinas, self.numero_de_trabajos, self.lista_de_vertices, sol_temporal)
+            
+            if mejor_sol is None or mejor_eval > eval_temporal:
+                mejor_sol =sol_temporal
+                mejor_eval = eval_temporal
+                
+        return mejor_sol,mejor_eval
+            
+        
+        
+        
     
-    def random( self,no_de_iteraciones):
+    def random2( self,no_de_iteraciones):
         #Generamos una primera solución inicial.
         mejor_sol = Solution_Management.generar_solucion(self.numero_de_maquinas,self.numero_de_trabajos,self.lista_de_vertices)
         mejor_eval = None
         
         
         for _ in range(no_de_iteraciones):
-            mejor_eval, r, q, info = Evaluador_Makespan.calculadora_makespan(self.numero_de_maquinas, self.numero_de_trabajos, self.lista_de_vertices, mejor_sol)
+            mejor_eval, r, q, _,_,info = Evaluador_Makespan.calculadora_makespan(self.numero_de_maquinas, self.numero_de_trabajos, self.lista_de_vertices, mejor_sol)
             
             print ("++++++++++++++++++++++++++++++++++++++++++")
             print ("Sol {}".format(mejor_sol))
@@ -39,7 +56,7 @@ class Busqueda_Por_Vecindades:
                 raise(ValueError("ERROR : Esta mal en algo, EN ALGO (la vecindad del vecino {} es vacía.)".format(mejor_sol)) )
                 
             # Evaluamos al vecino.
-            eval_vecino, r_1, q_1, info_1 = Evaluador_Makespan.calculadora_makespan(self.numero_de_maquinas, self.numero_de_trabajos, self.lista_de_vertices, vecino)
+            eval_vecino, r_1, q_1,_,_,info_1 = Evaluador_Makespan.calculadora_makespan(self.numero_de_maquinas, self.numero_de_trabajos, self.lista_de_vertices, vecino)
             
             
             

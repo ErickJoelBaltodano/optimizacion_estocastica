@@ -15,29 +15,24 @@ class Generadora_de_vecinos:
            'crítica' = True si lo está y False en otro caso).
     '''
 
+  
     @staticmethod
     def construir_nueva_info(makespan, r, q, info):
-
         nueva_info = {}
 
         for op_id, datos in info.items():
-            print("Operaciones en info:", info.keys())
-            print("Claves en r:", r.keys())
-            print("Claves en q:", q.keys())
-            print (type(q))
-            print (op_id)
+            if op_id not in r or op_id not in q:
+                print(f"Advertencia: Falta la clave {op_id} en r o q. Se omitirá esta operación.")
+                continue  # Omitir esta operación
+
             nueva_info[op_id] = {
-                
-                **datos, # Copiamos igualito lo que ya estaba
-                'r': r[op_id], # El ri
-                'q': q[op_id], # El qi
-                'critica': (r[op_id] + q[op_id]) == makespan # Una operación es
-                                                             # crítica sii 
-                                                             # ri + qi = makespan
+                **datos,  # Copiar los datos existentes
+                'r': r[op_id],  # El ri
+                'q': q[op_id],  # El qi
+                'critica': (r[op_id] + q[op_id]) == makespan  # Bandera de ruta crítica
             }
 
-        return nueva_info
-
+        return nueva_info            
     '''
     Teniendo la info_auxiliar ahora podemos generar a los vecinos:
         1. Dada una solución, digamos: [[1, 8, 5], [4, 9, 2], [7, 3, 6]]
