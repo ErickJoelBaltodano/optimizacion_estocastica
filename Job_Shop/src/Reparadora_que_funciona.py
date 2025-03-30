@@ -61,11 +61,6 @@ class Reparadora:
             print('\nplanificables', planificables)
             print(f"\nLa solución (en reparación) es: {solucion}")  
 
-            '''# Imprimir el estado de `info` en cada iteración
-            print("Estado de info en esta iteración:")
-            for op_id, datos in info.items():
-                print(f"Operación {op_id}: {datos}")'''
-
             # Caso donde `planificables` no es una lista vacía.
             for operacion_idx, op_id in enumerate(planificables):
 
@@ -151,6 +146,12 @@ class Reparadora:
                     planificables = list(set(sigue_en_job) & set(sigue_en_maquina))
 
 
-        print("La nueva solución es: ", solucion)
+        # Imprimir el estado de `info` al final
+            print("\nEstado de info al finalizar el proceso:")
+            for op_id, datos in info.items():
+                print(f"Operación {op_id}: {datos}")
+
+        
+        print("\nLa nueva solución es: ", solucion)
         
         return solucion # Quiero que regrese la solución ya reparada.
