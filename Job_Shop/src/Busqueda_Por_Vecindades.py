@@ -20,7 +20,7 @@ class Busqueda_Por_Vecindades:
         mejor_sol = None
         mejor_eval = None
         for _ in range(no_de_iteraciones):
-            sol_temporal = Solution_Management.generar_solucion(self.numero_de_maquinas,self.numero_de_trabajos,self.lista_de_vertices)
+            sol_temporal = Solution_Generator.generar_solucion(self.numero_de_maquinas,self.numero_de_trabajos,self.lista_de_vertices)
             eval_temporal ,_, _, _,_,_ = Evaluador_Makespan.calculadora_makespan(self.numero_de_maquinas, self.numero_de_trabajos, self.lista_de_vertices, sol_temporal)
             
             if mejor_sol is None or mejor_eval > eval_temporal:
