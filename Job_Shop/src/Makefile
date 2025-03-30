@@ -29,3 +29,6 @@ Entrega2:
 clean-results:
 	@cd Resultados
 	@rm *
+
+clean:
+	@rm -r __pycache__
