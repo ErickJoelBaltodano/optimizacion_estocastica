@@ -62,7 +62,7 @@ class Solution_Management:
         
             maquina_del_elegido = lista_de_vertices[operacion_elegida].get_maquina()
         
-            solucion[maquina_del_elegido-1].append(operacion_elegida)  
+            solucion[maquina_del_elegido].append(operacion_elegida)  
 
             planificables.remove(operacion_elegida)
 

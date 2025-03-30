@@ -5,34 +5,53 @@ from Generadora_de_vecinos import *
 from Busqueda_Por_Vecindades import *
 import sys
 
-if (len(sys.argv) != 2):
-    raise ValueError("ERROR: Número de parámetros INCORRECTO >:V")
+# Validación de parámetros actualizada
+if len(sys.argv) < 2 or len(sys.argv) > 3:
+    raise ValueError("ERROR: Parámetros incorrectos. Uso: <documento> [iteraciones]")
 
+# Lectura de parámetros
+documento = sys.argv[1]
+iteraciones = 100  # Valor por defecto
+
+# Si se especifican iteraciones
+if len(sys.argv) == 3:
+    try:
+        iteraciones = int(sys.argv[2])
+    except ValueError:
+        raise ValueError("El número de iteraciones debe ser un entero válido")
 
 # Lectura de Ejemplar
-documento_de_entrada = "./Ejemplares/" + sys.argv[1]+".txt"
+documento_de_entrada = f"./Ejemplares/{documento}.txt"
 
-print ("Leyendo Documento : {}".format(documento_de_entrada))
-print ("==========================================================================")
+print(f"Leyendo Documento: {documento_de_entrada}")
+print("=" * 75)
 
+# Lectura de datos
+numero_de_maquinas, numero_de_trabajos, lista_de_vertices = Reader_and_Writer_VAde.read(documento_de_entrada)
 
-numero_de_maquinas, numero_de_trabajos, lista_de_vertices =Reader_and_Writer_VAde.read(documento_de_entrada)
+print("Lectura Exitosa")
+print("=" * 75)
 
-print ("Lectura Exitosa ")
-print ("==========================================================================")
-
-
-
-#Representacion de ejemplares
-print ("Representación del ejemplar {}".format(documento_de_entrada))
+# Representación de ejemplares
+print(f"Representación del ejemplar {documento_de_entrada}")
 for x in lista_de_vertices:
-    print (x)
-    
-print ("==========================================================================")
+    print(x)
+print("=" * 75)
 
+# Configuración de la búsqueda
+b = Busqueda_Por_Vecindades(numero_de_maquinas, numero_de_trabajos, lista_de_vertices)
+print(f"Realizando Búsqueda Aleatoria con {iteraciones} iteraciones")
 
-b = Busqueda_Por_Vecindades(numero_de_maquinas,numero_de_trabajos,lista_de_vertices)
-print ("Realizando Busqueda Aleatoria")
+# Ejecución con el número de iteraciones especificado
+sol, val = b.random(iteraciones)
 
-sol, val =b.random  (100)
-print("============================================================================\n MEJOR SOLUCION : {} \n MAKESPAN : {}\n============================================================================".format(sol,val))
+# Resultado final mejorado
+resultado = f"""
+============================================================================
+ MEJOR SOLUCIÓN ENCONTRADA (después de {iteraciones} iteraciones):
+ 
+{sol}
+
+ MAKESPAN: {val}
+============================================================================"""
+print(resultado)

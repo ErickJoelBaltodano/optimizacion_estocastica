@@ -1,27 +1,30 @@
-# Este usa: Reader_and_Writer_VAde, Vertice_VAde, e Intento_Solution_Generator.
-# Con el prueba3.txt.
-# Generar solución aleatoria y calcular el makespan
-generar_sol_aleatoria_y_makespan: 
-	@python3 Version_Ade.py
+.PHONY: generar_sol_aleatoria_y_makespan info Entrega1 Entrega2 clean-results
 
 # Información de uso
 info:
-	@echo "Para ejecutar el programa, usa:"
-	@echo "make job-shop DOCUMENTO=nombre_del_ejemplar"
-	@echo "El ejemplar debe estar en la carpeta 'Ejemplares'"
-	@echo "Ejemplo:"
-	@echo "make Entrega1 DOCUMENTO=swv10"
+	@echo "\nUSO DEL PROGRAMA:"
+	@echo "------------------------------------------------------------"
+	@echo "Para ejecutar la búsqueda con un ejemplar específico:"
+	@echo "  make Entrega1 DOCUMENTO=<nombre> [ITER=<iteraciones>]"
+	@echo ""
+	@echo "Donde:"
+	@echo "  <nombre>       = Nombre del archivo SIN extensión (.txt)"
+	@echo "                   (Debe estar en la carpeta 'Ejemplares')"
+	@echo "  <iteraciones>  = Número de iteraciones (opcional)"
+	@echo "                   Valor por defecto: 100"
+	@echo ""
+	@echo "Ejemplos:"
+	@echo "  make Entrega1 DOCUMENTO=swv10        # 100 iteraciones"
+	@echo "  make Entrega1 DOCUMENTO=mi_ejemplo ITER=500"
+	@echo "------------------------------------------------------------\n"
 
-
-
-# Ejecutar la búsqueda por vecindades con un ejemplar específico
+# Ejecutar la búsqueda con parámetros
 Entrega1:
-	@python3 Main_Entrega1.py $(DOCUMENTO)
+	@python3 Main_Entrega1.py $(DOCUMENTO) $(ITER)
 
-
+# Otras reglas (mantenidas sin cambios)
 Entrega2:
 	@python3 Main_Entrega2.py $(DOCUMENTO)
-
 
 clean-results:
 	@cd Resultados

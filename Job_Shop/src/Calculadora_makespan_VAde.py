@@ -189,7 +189,7 @@ class Evaluador_Makespan:
                 Evaluador_Makespan.agregar_a_planificables(suc_maquina, info, planificables)
         
         makespan = max(f.values()) # El 'makespan' 
-        print(f"\n--- Makespan (forward) calculado: {makespan} ---\n")
+        #print(f"\n--- Makespan (forward) calculado: {makespan} ---\n")
 
         # Como vamos a recorrer el grafo al revés, necesitamos resetear las flags:
         for op_id in info:
@@ -253,7 +253,9 @@ class Evaluador_Makespan:
                 Evaluador_Makespan.agregar_a_planificables_backward(pred_maquina, info, planificables_backward)
         
         makespan_reverso = max(q.values()) # El 'makespan' del recorrido al revés
-        print(f"\n--- Makespan (reverso) calculado: {makespan_reverso} ---")
+        #print(f"\n--- Makespan (reverso) calculado: {makespan_reverso} ---")
+
+        print(f"\n--- Makespan calculado: {makespan_reverso} ---")
 
         return makespan, r, q, t, d, info # Por si en algún momento de la vida sirve, le pedí también que retornara los
                                           # diccionarios con las t's y d's (como recordatorio: q = t + d)
