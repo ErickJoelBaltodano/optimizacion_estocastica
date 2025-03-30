@@ -2,7 +2,7 @@
 
 # Información de uso
 info:
-	@echo "\nUSO DEL PROGRAMA:"
+	@echo "USO DEL PROGRAMA:"
 	@echo "------------------------------------------------------------"
 	@echo "Para ejecutar la búsqueda con un ejemplar específico:"
 	@echo "  make Entrega1 DOCUMENTO=<nombre> [ITER=<iteraciones>]"
