@@ -32,3 +32,6 @@ clean-results:
 
 clean:
 	@rm -r __pycache__
+
+create_table:
+	@python3 Tabla.py $(Iteraciones)

@@ -19,15 +19,18 @@ class Busqueda_Por_Vecindades:
     def random (self,no_de_iteraciones):
         mejor_sol = None
         mejor_eval = None
+        valores = []
+        soluciones =[]
         for _ in range(no_de_iteraciones):
             sol_temporal = Solution_Generator.generador_solucion(self.numero_de_maquinas,self.numero_de_trabajos,self.lista_de_vertices)
             eval_temporal ,_, _, _,_,_ = Evaluador_Makespan.calculadora_makespan(self.numero_de_maquinas, self.numero_de_trabajos, self.lista_de_vertices, sol_temporal)
-            
+            soluciones.append(sol_temporal)
+            valores.append(eval_temporal)
             if mejor_sol is None or mejor_eval > eval_temporal:
                 mejor_sol =sol_temporal
                 mejor_eval = eval_temporal
                 
-        return mejor_sol,mejor_eval
+        return mejor_sol,mejor_eval,valores,soluciones
             
         
         
