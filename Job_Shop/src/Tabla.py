@@ -149,19 +149,6 @@ if archivos_procesados > 0:
         "Tipo Búsqueda"
     ]
     
-    print("\nRESULTADOS DETALLADOS:")
+    print("\nRESULTADOS:")
     print(tabulate(tabla_resumen, headers=headers, tablefmt="grid"))
-    
-    # Estadísticas generales
-    mejor_total = min(resultados['mejor_makespan'])
-    peor_total = max(resultados['mejor_makespan'])
-    promedio_total = sum(resultados['mejor_makespan'])/len(resultados['mejor_makespan'])
-    
-    print(f"\nEstadísticas generales:")
-    print(f"Mejor makespan global: {mejor_total}")
-    print(f"Peor makespan global: {peor_total}")
-    print(f"Makespan promedio: {promedio_total:.2f}")
-
-print("=" * 75)
-print("PROCESAMIENTO COMPLETADO")
-print("=" * 75)
+  
