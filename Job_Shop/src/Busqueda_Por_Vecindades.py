@@ -38,7 +38,7 @@ class Busqueda_Por_Vecindades:
     
     def random2( self,no_de_iteraciones):
         #Generamos una primera solución inicial.
-        mejor_sol = Solution_Management.generar_solucion(self.numero_de_maquinas,self.numero_de_trabajos,self.lista_de_vertices)
+        mejor_sol = Solution_Generator.generador_solucion(self.numero_de_maquinas,self.numero_de_trabajos,self.lista_de_vertices)
         mejor_eval = None
         
         
@@ -81,7 +81,7 @@ class Busqueda_Por_Vecindades:
         mejor_eval = None
         comparaciones_actuales =0
         if sol_actual is None:
-            sol_actual = Solution_Management.generar_solucion(self.numero_de_maquinas,self.numero_de_trabajos,self.lista_de_vertices)
+            sol_actual = Solution_Generator.generador_solucion(self.numero_de_maquinas,self.numero_de_trabajos,self.lista_de_vertices)
         mejor_sol = None
         eval_actual = None
         temperatura = temp_inicial
@@ -97,10 +97,16 @@ class Busqueda_Por_Vecindades:
             # Iteramos nuestro contador.
             comparaciones_actuales +=1
             #Calculamos la vecindad dada una solución actual.
-            vecindad, m = Generadora_de_vecinos.construir_vecindad(sol_actual, eval_actual, r1, q1, info1)
+            vecindad = Generadora_de_vecinos.construir_vecindad(sol_actual, eval_actual, r1, q1, info1)
             
             # Escogemos un vecino de la vecindad actual
-            vecino = random.choice (vecindad)  # PENDIENTE
+            if vecindad != []:
+                # Caso normal.
+                vecino = Generadora_de_vecinos.decodificar_vecino(random.randint(0, len (vecindad)-1), vecindad, mejor_sol)
+                
+            else:
+                
+                raise(ValueError("ERROR : Esta mal en algo, EN ALGO (la vecindad del vecino {} es vacía.)".format(mejor_sol)) )
             
             eval_vecino, r2,q2,t2,d2,info2 = Evaluador_Makespan.calculadora_makespan(self.numero_de_maquinas,self.numero_de_trabajos,
                                                                                    self.lista_de_vertices,vecino)

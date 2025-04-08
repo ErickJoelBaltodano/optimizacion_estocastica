@@ -26,6 +26,9 @@ Entrega1:
 Entrega2:
 	@python3 Main_Entrega2.py $(DOCUMENTO)
 
+Entrega3:
+	@python3 Main_Entrega3.py $(DOCUMENTO)
+
 clean-results:
 	@cd Resultados
 	@rm *
@@ -35,3 +38,6 @@ clean:
 
 create_table:
 	@python3 Tabla.py $(Iteraciones)
+
+make run:
+	@python3 Pruebas.py $(DOCUMENTO) $(ITER)

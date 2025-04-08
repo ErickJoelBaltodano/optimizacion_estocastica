@@ -43,7 +43,7 @@ b = Busqueda_Por_Vecindades(numero_de_maquinas, numero_de_trabajos, lista_de_ver
 print(f"Realizando Búsqueda Aleatoria con {iteraciones} iteraciones")
 
 # Ejecución con el número de iteraciones especificado
-sol, val= b.random2(iteraciones)
+sol, val= b.busqueda_generacional(iteraciones)
 
 # Resultado final mejorado
 resultado = f"""

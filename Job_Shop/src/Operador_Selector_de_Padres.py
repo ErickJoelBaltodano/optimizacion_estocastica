@@ -12,4 +12,4 @@ class Operador_Selector_de_Padres:
             if numero2 != numero1:
                 break
             
-        return poblacion[numero1],poblacion[numero2]
+        return numero1,numero2

@@ -3,6 +3,7 @@ from Reader_and_Writer_VAde import *
 from Vertice_VAde import *
 from Generadora_de_vecinos import *
 from Busqueda_Por_Vecindades import *
+from Job_Shop_Problem import *
 import sys
 
 # Validación de parámetros actualizada
@@ -23,36 +24,34 @@ if len(sys.argv) == 3:
 # Lectura de Ejemplar
 documento_de_entrada = f"./Ejemplares/{documento}.txt"
 
-print(f"Leyendo Documento: {documento_de_entrada}")
-print("=" * 75)
 
 # Lectura de datos
 numero_de_maquinas, numero_de_trabajos, lista_de_vertices = Reader_and_Writer_VAde.read(documento_de_entrada)
 
-print("Lectura Exitosa")
-print("=" * 75)
+jsp = Job_Shop_Problem(lista_de_vertices,numero_de_maquinas,numero_de_trabajos)
 
-# Representación de ejemplares
-print(f"Representación del ejemplar {documento_de_entrada}")
-for x in lista_de_vertices:
+for x in jsp.vertices:
     print(x)
-print("=" * 75)
+    
 
-# Configuración de la búsqueda
-b = Busqueda_Por_Vecindades(numero_de_maquinas, numero_de_trabajos, lista_de_vertices)
-print(f"Realizando Búsqueda Aleatoria con {iteraciones} iteraciones")
+print ("Machs{} \n Jobs{}".format(numero_de_maquinas,numero_de_trabajos))
 
-# Ejecución con el número de iteraciones especificado
-sol, val= b.random2(iteraciones)
 
-# Resultado final mejorado
-resultado = f"""
-============================================================================
- MEJOR SOLUCIÓN ENCONTRADA (después de {iteraciones} iteraciones):
- 
-{sol}
+m,c =jsp.makespan()
 
- MAKESPAN: {val}
-============================================================================"""
-print(resultado)
+print ("Camino Crítico {}\n Makespan {}".format(c,m))
 
+print(jsp.makespan())
+'''for x in jsp.solucion:
+    print(x)
+
+'''
+jsp.generacional_con_recocido_simulado(100)
+
+print (jsp.makespan())
+
+
+
+'''for x in jsp.solucion:
+    print(x)
+'''

@@ -67,3 +67,7 @@ class Solution_Generator:
                 planificables.append(operacion_elegida+1)
 
         return solucion
+    
+    @staticmethod
+    def generar_vecindad(solucion,camino_critico,makespan):
+        pass
