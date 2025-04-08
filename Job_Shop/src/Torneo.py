@@ -3,9 +3,8 @@ from Calculadora_makespan_VAde import *
 
 class Torneo:
     #No retornamos nada porque los cambios son en la memoria
-    
     @staticmethod
-    def hijos_vs_poblacion (poblacion,hijo1, hijo2,numero_de_maquinas,numero_de_trabajos,lista_de_vertices):
+    def hijos_vs_poblacion (poblacion,makespans,hijo1,hijo2,makespan_hijo1,makespan_hijo2):
         # Generar el primer número
         numero1 = random.randint(0, len(poblacion)-1)
 
@@ -14,31 +13,14 @@ class Torneo:
             numero2 = random.randint(0, len(poblacion)-1)
             if numero2 != numero1:
                 break
-         
-        contendiente1, r1, q1,  info1 = Evaluador_Makespan.calculadora_makespan(numero_de_maquinas, numero_de_trabajos, 
-                                                                             lista_de_vertices, poblacion[numero1])
-        
-        contendiente2, r2, q2,  info2 = Evaluador_Makespan.calculadora_makespan(numero_de_maquinas, numero_de_trabajos, 
-                                                                             lista_de_vertices, poblacion[hijo1])
-        
-       
-        
-        if (contendiente1 > contendiente2):
-            self.poblacion[numero1]= hijo1
             
-        contendiente1, r1, q1,  info1 = Evaluador_Makespan.calculadora_makespan(numero_de_maquinas, numero_de_trabajos, 
-                                                                             lista_de_vertices, poblacion[numero2])
+        '''Torneo 1'''
+        if makespan_hijo1 < makespans[numero1]:
+            poblacion[numero1]= hijo1
+            makespans[numero1]= makespan_hijo1
         
-        contendiente2, r2, q2, info2 = Evaluador_Makespan.calculadora_makespan(numero_de_maquinas, numero_de_trabajos, 
-                                                                             lista_de_vertices, poblacion[hijo2])
+        '''Torneo 2'''
+        if makespan_hijo2 < makespans[numero2]:
+            poblacion[numero2]= hijo2
+            makespans[numero2]= makespan_hijo2
         
-       
-        
-        if (contendiente1 > contendiente2):
-            self.poblacion[numero2]= hijo2
-            
-        return 
-        
-            
-        
-

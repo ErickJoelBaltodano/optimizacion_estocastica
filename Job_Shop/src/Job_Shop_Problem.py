@@ -4,6 +4,7 @@ from Reparadora_de_Soluciones import *
 from Operador_Cruza_de_Padres import *
 from Operador_Selector_de_Padres import *
 from Operador_de_Listas import *
+from Torneo import *
 import random
 import math
 
@@ -119,26 +120,20 @@ class Job_Shop_Problem:
                                            factor_de_enfriamiento =.95):
         
         
+        evaluaciones_actuales = 0
         # Generamos una vecindad inicial
         poblacion = [Solution_Generator.generador_solucion(self.numero_de_maquinas,self.numero_de_trabajos,self.vertices) for _ in range(tamaño_generacional)]
-        makespans = [None  for _ in poblacion] # Dado que las soluciones son aleatorias,no vale la pena evaluarlas ahorita
-        
-        evaluaciones_actuales = 0
-        
+        makespans = []
+        #Mejoramos con recocido simulado la población.    
+        for i in poblacion:
+                
+            i,j=self.recocido_simulado(evaluaciones_recocido,temp_inicial,factor_de_enfriamiento)
+            makespans.append(j)
+            
+        evaluaciones_actuales += tamaño_generacional*evaluaciones_recocido
         
         while (evaluaciones_actuales < evaluaciones_totales):
-            
-            #Mejoramos con recocido simulado la población.    
-            i = 0
-            while i  < len(poblacion):
-                poblacion[i]= self.recocido_simulado(evaluaciones_recocido,temp_inicial,factor_de_enfriamiento)
-                for x in poblacion [i]:
-                    print (x)
-                k,j = self.makespan(poblacion[i])
-            
-            # Dado que evaluamos n individuos hay que incrementar el contador
-            evaluaciones_actuales += tamaño_generacional
-            
+                
             #Seleccionamos a los padres
             indice_padre_1,indice_padre_2 = operador_selector_de_padres(poblacion)
             
@@ -150,15 +145,16 @@ class Job_Shop_Problem:
             hijo1 = Reparadora.reparacion(hijo1,self.numero_de_maquinas,self.numero_de_trabajos,self.vertices)
             hijo2 = Reparadora.reparacion(hijo2,self.numero_de_maquinas,self.numero_de_trabajos,self.vertices)
             
+
+            # Calculamos el makespan de las soluciones obtenidas
+            m1 = self.makespan(hijo1)
+            m2 = self.makespan(hijo2)
             
             
-            #Reemplazamos a los padres de la poblacion
-            poblacion[indice_padre_1]= hijo1
-            poblacion[indice_padre_2]= hijo2
+            #Realizamos un torneo hijos vs poblacion actual
+            Torneo.hijos_vs_poblacion(poblacion,makespans,hijo1,hijo2,m1,m2)
             
-            # Recalculamos los makespans
-            makespans[indice_padre_1] = self.makespan(hijo1)
-            makespans[indice_padre_2] = self.makespan(hijo2)
+            
             
             evaluaciones_actuales+=2
             
@@ -266,7 +262,6 @@ class Job_Shop_Problem:
     def set_solution(self,solution):
         self.solucion = solution
         
-         
         
 
     #Método donde calculamos el makespan de cada elemento de cada operación y calculamos el camino crítico.
