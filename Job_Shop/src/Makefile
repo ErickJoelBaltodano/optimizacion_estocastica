@@ -36,8 +36,14 @@ clean-results:
 clean:
 	@rm -r __pycache__
 
-create_table:
-	@python3 Tabla.py $(Iteraciones)
+create_table1:
+	@python3 Tabla_Entrega1.py $(Iteraciones)
+
+create_table2:
+	@python3 Tabla_Entrega2.py $(Iteraciones)
+
+create_table3:
+	@python3 Tabla_Entrega3.py $(Iteraciones)
 
 make run:
 	@python3 Pruebas.py $(DOCUMENTO) $(ITER)

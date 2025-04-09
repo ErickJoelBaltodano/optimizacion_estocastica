@@ -7,7 +7,7 @@ from Operador_de_Listas import *
 from Torneo import *
 import random
 import math
-
+import copy
 
 class Job_Shop_Problem:
     
@@ -23,9 +23,12 @@ class Job_Shop_Problem:
             self.solucion = solucion
         
     # Algoritmo mediante el cual generamos una vecindad
-    def get_neightborhood(self):
+    def get_neightborhood(self,solucion = None):
         vecinos = []
         _, camino_critico = self.makespan()
+        if solucion != None:
+            temporal = copy.deepcopy(self.solucion)
+            self.set_solution(solucion)
 
         for i in range(len(camino_critico) - 1):
             u = camino_critico[i]
@@ -46,7 +49,9 @@ class Job_Shop_Problem:
                 nueva_solucion[maquina][posicion_u], nueva_solucion[maquina][posicion_v] = \
                     nueva_solucion[maquina][posicion_v], nueva_solucion[maquina][posicion_u]
                 vecinos.append(nueva_solucion)
-
+        
+        if solucion != None:
+            self.set_solution(temporal)
         return vecinos   
     
     # Método donde iteramos aleatoriamente sobre las vecindades
@@ -80,19 +85,27 @@ class Job_Shop_Problem:
         mejor_eval,_ = self.makespan()
         evaluaciones_actuales =1
         temperatura = temp_inicial
+        actual = copy.deepcopy(self.solucion)
+        eval_actual = mejor_eval
+        soluciones = []
+        makespans = []
 
 
             
         while  evaluaciones_actuales < no_de_evaluaciones and temperatura > 1:
             
-            vecino = random.choice(self.get_neightborhood())
+            vecino = random.choice(self.get_neightborhood(actual))
             eval_vecino,_= self.makespan(solution=vecino)
             evaluaciones_actuales +=1
             
             if (mejor_eval > eval_vecino):
-                
-                self.set_solution(vecino)
+                #Actualizamos referencias
+                self.set_solution(copy.deepcopy(vecino))
                 mejor_eval = eval_vecino
+                actual = copy.deepcopy(vecino)
+                eval_actual = eval_actual
+                soluciones.append(copy.deepcopy(vecino))
+                makespans.append(eval_actual)
             
             else:
                 # Si no generamos una probabilidad de mover nuestra solución actual en caso contrario no hacemos NADOTA :D
@@ -106,7 +119,7 @@ class Job_Shop_Problem:
         
             # Actualizamos la temperatura
             temperatura *= factor_de_enfriamiento
-        return self.solucion,mejor_eval
+        return self.solucion,mejor_eval,soluciones,makespans
 
     
     #Algoritmo Memético.
@@ -124,15 +137,18 @@ class Job_Shop_Problem:
         # Generamos una vecindad inicial
         poblacion = [Solution_Generator.generador_solucion(self.numero_de_maquinas,self.numero_de_trabajos,self.vertices) for _ in range(tamaño_generacional)]
         makespans = []
+        promedios = []
         #Mejoramos con recocido simulado la población.    
         for i in poblacion:
                 
-            i,j=self.recocido_simulado(evaluaciones_recocido,temp_inicial,factor_de_enfriamiento)
+            i,j,_,_=self.recocido_simulado(evaluaciones_recocido,temp_inicial,factor_de_enfriamiento)
             makespans.append(j)
             
         evaluaciones_actuales += tamaño_generacional*evaluaciones_recocido
-        
+        m = makespans
         while (evaluaciones_actuales < evaluaciones_totales):
+            
+            promedios.append(copy.deepcopy(makespans))
                 
             #Seleccionamos a los padres
             indice_padre_1,indice_padre_2 = operador_selector_de_padres(poblacion)
@@ -147,11 +163,12 @@ class Job_Shop_Problem:
             
 
             # Calculamos el makespan de las soluciones obtenidas
-            m1 = self.makespan(hijo1)
-            m2 = self.makespan(hijo2)
+            m1,_= self.makespan(hijo1)
+            m2,_= self.makespan(hijo2)
             
             
             #Realizamos un torneo hijos vs poblacion actual
+            '''Nota: En este método no tenemos que preocuparnos por perder al mejor generacioal dado que solo es reemplazado si es superado'''
             Torneo.hijos_vs_poblacion(poblacion,makespans,hijo1,hijo2,m1,m2)
             
             
@@ -159,7 +176,7 @@ class Job_Shop_Problem:
             evaluaciones_actuales+=2
             
                   
-        return poblacion,makespans
+        return poblacion,makespans,promedios
         
         
         
