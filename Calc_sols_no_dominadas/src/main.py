@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from individuos import *
+from individuo import *
 from frente_de_pareto_cuadratico import *
 
 def dtlz1(x: list, m: int = 3) -> list:
@@ -23,25 +23,38 @@ def generar_poblacion(n: int, n_variables: int, n_objetivos: int) -> list[Indivi
         poblacion.append(Individuo(x, funciones))
     return poblacion
 
-def visualizar_frente(frente: list[Individuo]):
-    """Visualización 2D/3D del frente de Pareto"""
-    objetivos = [ind.f for ind in frente]
+def visualizar_frente(poblacion: list[Individuo], frente: list[Individuo]):
+    """Visualización 2D/3D de la población y del frente de Pareto"""
+    # Extraemos valores de objetivos
+    obj_pob = [ind.f for ind in poblacion]
+    obj_frt = [ind.f for ind in frente]
     
-    if len(objetivos[0]) == 2:
-        plt.scatter(*zip(*objetivos))
+    dim = len(obj_pob[0])
+    if dim == 2:
+        # Plot de toda la población en azul
+        plt.scatter(*zip(*obj_pob), label='Población', alpha=0.4)
+        # Plot del frente en rojo
+        plt.scatter(*zip(*obj_frt), color='red', label='Soluciones no-dominadas')
         plt.xlabel('f1')
         plt.ylabel('f2')
         plt.title('Frente de Pareto 2D')
+        plt.legend()
         plt.show()
-    elif len(objetivos[0]) == 3:
+
+    elif dim == 3:
         fig = plt.figure()
         ax = fig.add_subplot(111, projection='3d')
-        ax.scatter(*zip(*objetivos))
+        # Población
+        ax.scatter(*zip(*obj_pob), label='Población', alpha=0.4)
+        # Frente
+        ax.scatter(*zip(*obj_frt), color='red', label='Soluciones no-dominadas')
         ax.set_xlabel('f1')
         ax.set_ylabel('f2')
         ax.set_zlabel('f3')
         plt.title('Frente de Pareto 3D')
+        ax.legend()
         plt.show()
+
     else:
         print("Visualización solo disponible para 2 o 3 objetivos")
 
@@ -49,7 +62,7 @@ if __name__ == "__main__":
     # Configuración
     N_POBLACION = 100
     N_VARIABLES = 7
-    N_OBJETIVOS = 3
+    N_OBJETIVOS = 2
     
     # Generar y evaluar población
     poblacion = generar_poblacion(N_POBLACION, N_VARIABLES, N_OBJETIVOS)
@@ -61,10 +74,10 @@ if __name__ == "__main__":
     
     # Resultados
     print(f"\nPoblación inicial: {len(poblacion)} individuos")
-    print(f"Frente de Pareto encontrado: {len(frente)} soluciones no dominadas")
+    print(f"\n{len(frente)} soluciones no dominadas")
     print("\nEjemplos de soluciones en el frente:")
     for sol in frente[:3]:
         print(f" - {sol}")
     
-    # Visualización
-    visualizar_frente(frente)
+    # Visualización de población + frente
+    visualizar_frente(poblacion, frente)

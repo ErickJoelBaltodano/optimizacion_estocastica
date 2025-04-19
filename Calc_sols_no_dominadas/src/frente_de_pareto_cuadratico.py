@@ -1,4 +1,4 @@
-from individuos import *
+from individuo import *
 
 class Version_cuadratica:
     def frente_pareto(poblacion: list[Individuo]) -> list[Individuo]:
