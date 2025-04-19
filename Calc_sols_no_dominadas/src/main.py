@@ -37,7 +37,8 @@ def visualizar_frente(poblacion: list[Individuo], frente: list[Individuo]):
         plt.scatter(*zip(*obj_frt), color='red', label='Soluciones no-dominadas')
         plt.xlabel('f1')
         plt.ylabel('f2')
-        plt.title('Frente de Pareto 2D')
+        plt.title('Conjunto de soluciones no-dominadas 2D')
+        plt.grid()
         plt.legend()
         plt.show()
 
@@ -51,7 +52,8 @@ def visualizar_frente(poblacion: list[Individuo], frente: list[Individuo]):
         ax.set_xlabel('f1')
         ax.set_ylabel('f2')
         ax.set_zlabel('f3')
-        plt.title('Frente de Pareto 3D')
+        plt.title('Conjunto de soluciones no-dominadas 3D')
+        ax.grid()
         ax.legend()
         plt.show()
 
