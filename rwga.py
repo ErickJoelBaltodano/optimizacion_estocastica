@@ -42,16 +42,15 @@ class RWGA:
                 vecino_x = s.x + np.random.uniform(-step, step, len(s.x)) # np.random.uniform(-step, step, len(s.x)) genera un vector alatorio de tamaño len(s.x). Cada entrada del vector 
                 #tiene valores en el rango [-step,step] (por defecto tomamos a step=0.05). A la respectiva solucion le sumamos la solucion actual y asi obtenemos a un vecino 
                 vecino_x = np.clip(vecino_x, 0, 1) #Nos asegura que los vecinos se queden dentro del espacio de busqueda. 
-                vecino = Individuo(vecino_x.tolist(), s.funciones)
-                vecino.evaluar()
-                f_vecino = np.dot(w, vecino.f)
-
-                if f_vecino < f_s:
-                    s = vecino
+                vecino = Individuo(vecino_x.tolist(), s.funciones) #Creamos un nuevo individuo con el vecino
+                vecino.evaluar() #Evaluamos al nuevo individuo (vecino)
+                f_vecino = np.dot(w, vecino.f) #Calculamos la evaluacion del nuevo individuo (vecino) mediante el producto punto wf
+                if f_vecino < f_s: #Si el nuevo individuo (vecino) es mejor que la solucion actual, entonces lo guardamos
+                    s = vecino 
                     f_s = f_vecino
                     mejorado = True
-                    break
-        return s
+                    break #Si el nuevo individuo (vecino) es mejor que la solucion actual, entonces lo guardamos y reiniciamos el ciclo
+        return s # Devolvemos la mejor solucion encontrada en la busqueda local
 
     def run(self, n_gen, func_generator):
         poblacion = []
