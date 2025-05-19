@@ -52,23 +52,23 @@ class RWGA:
                     break #Si el nuevo individuo (vecino) es mejor que la solucion actual, entonces lo guardamos y reiniciamos el ciclo
         return s # Devolvemos la mejor solucion encontrada en la busqueda local
 
-    def run(self, n_gen, func_generator):
-        poblacion = []
-        for _ in range(self.n_pop):
-            x = np.random.rand(self.n_var).tolist()
-            funcs = [lambda x, i=i: func_generator(x)[i] for i in range(self.n_obj)]
-            poblacion.append(Individuo(x, funcs))
+    def run(self, n_gen, func_generator): # Este es el rwga.
+        poblacion = [] #Generamos la poblacion inicial de tamaño n_pop.
+        for _ in range(self.n_pop): 
+            x = np.random.rand(self.n_var).tolist() #Cada individuo de la poblacion tiene entradas con valores entre 0 y 1.
+            funcs = [lambda x, i=i: func_generator(x)[i] for i in range(self.n_obj)] 
+            poblacion.append(Individuo(x, funcs))  
 
-        for gen in range(n_gen):
-            for ind in poblacion:
+        for gen in range(n_gen): #Iteramos n_gen veces
+            for ind in poblacion:#Evaluamos a cada individuo de la poblacion actual
                 ind.evaluar()
-            no_dom = Version_cuadratica.frente_pareto(poblacion)
+            no_dom = Version_cuadratica.frente_pareto(poblacion) #Calculamos el frente de pareto de usando el metodo de la version cuadratica.
 
-            offspring = []
-            weight_list = []
-            n_pairs = (self.n_pop - self.n_elite) // 2
-            for _ in range(n_pairs):
-                w = np.random.rand(self.n_obj)
+            offspring = [] #Inicializamos la lista de descendientes 
+            weight_list = [] #Inicializamos una lista de pesos 
+            n_pairs = (self.n_pop - self.n_elite) // 2  #Calculamos el numero de pares de padres que vamos a usar para generar descendientes. 
+            for _ in range(n_pairs): 
+                w = np.random.rand(self.n_obj) 
                 w /= w.sum()
                 weight_list.append(w)
 
