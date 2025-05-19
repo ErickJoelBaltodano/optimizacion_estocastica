@@ -1,3 +1,6 @@
+from individuo import *
+
+
 def comparar_objetivos(a: Individuo, b: Individuo) -> int:
     """
     Retorna:

@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from individuo import *
+from rwga import *
 from frente_de_pareto_cuadratico import *
 
 def dtlz1(x: list, m: int = 3) -> list:
