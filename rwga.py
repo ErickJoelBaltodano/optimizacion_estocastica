@@ -68,17 +68,16 @@ class RWGA:
             weight_list = [] #Inicializamos una lista de pesos 
             n_pairs = (self.n_pop - self.n_elite) // 2  #Calculamos el numero de pares de padres que vamos a usar para generar descendientes. 
             for _ in range(n_pairs): 
-                w = np.random.rand(self.n_obj) 
-                w /= w.sum()
-                weight_list.append(w)
+                w = np.random.rand(self.n_obj) #se crean n_pairs de  vectores de pesos aleatorios.
+                w /= w.sum() # Normalizamos el vector de pesos para que la suma de sus entradas sea igual a 1.
+                weight_list.append(w) #Guardaos esos vectores de pesos en la lista de pesos anteriormente inicializada.
+                agg = np.array([np.dot(w, ind.f) for ind in poblacion]) #Dado un w, generamos un vector de evaluaciones de la poblacion.
+                fitness = 1.0 / (agg + 1e-8) #Tomamos el inverso de las evaluaciones para obtener el fitness de cada individuo. Sumamos un epsilon para evitar la division por cero.
+                probs = fitness / fitness.sum() #Para ese w generamos un vector de probabilidades para seleccionar a los padres.
+                padres = np.random.choice(poblacion, size=2, replace=False, p=probs) #Elegimos a los padres de la poblacion usando el vector de probabilidades.
 
-                agg = np.array([np.dot(w, ind.f) for ind in poblacion])
-                fitness = 1.0 / (agg + 1e-8)
-                probs = fitness / fitness.sum()
-                padres = np.random.choice(poblacion, size=2, replace=False, p=probs)
-
-                c1_x, c2_x = self.weighted_average_crossover(padres[0].x, padres[1].x)
-                c1_x = self.mutate(c1_x)
+                c1_x, c2_x = self.weighted_average_crossover(padres[0].x, padres[1].x) #Generamos los hijos usando el operador de cruza definido anteriormente con el respectivo w
+                c1_x = self.mutate(c1_x) #aplicamos el operador de mutacion a los hijos generados
                 c2_x = self.mutate(c2_x)
 
                 funcs = padres[0].funciones
