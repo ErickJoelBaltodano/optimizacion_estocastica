@@ -10,6 +10,7 @@ class Cruzar:
         h2 = p2[:punto] + p1[punto:]
         return h1, h2
 
+    # Este es el que vamos a usar porque promueve diversidad sin ser tan computacionalmente costoso
     def cruza_dos_puntos(p1: str, p2: str) -> tuple[str, str]:
         if len(p1) != len(p2):
             raise ValueError("Padres de distinta longitud")
@@ -18,6 +19,8 @@ class Cruzar:
         h2 = p2[:a] + p1[a:b] + p2[b:]
         return h1, h2
 
+    # Este probablemente sea "mejor" que el de dos puntos, pero es más costoso computacionalmente
+    # y no creo que sea buena idea agregar complejidad computacional a lo loco.
     def cruza_uniforme(p1: str, p2: str, prob: float = 0.5) -> tuple[str, str]:
         if len(p1) != len(p2):
             raise ValueError("Padres de distinta longitud")
