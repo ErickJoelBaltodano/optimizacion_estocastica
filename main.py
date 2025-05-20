@@ -14,6 +14,40 @@ def dtlz1(x: list, m: int = 3) -> list:
     objectives.append(0.5 * (1 - x[0]) * (1 + g))
     return objectives
 
+def dtlz5(x: list, m: int = 3) -> list:
+    """
+    Función benchmark DTLZ5 para pruebas.
+    x: lista de n variables en [0,1]
+    m: número de objetivos
+    Devuelve lista de m valores [f1, f2, ..., fm]
+    """
+    # 1. Calculamos k y g
+    k = len(x) - m + 1
+    tail = x[-k:]                           # las últimas k variables
+    g = sum((xi - 0.5)**2 for xi in tail)   # g(x_M)
+
+    # 2. Calculamos los ángulos θ
+    theta = [0.0] * m
+    theta[0] = np.pi * x[0] / 2.0
+    for i in range(1, m):
+        theta[i] = (np.pi / (2 * (1 + 2 * g))) * (1 + 2 * g * x[i])
+
+    # 3. Construimos los objetivos con cos y sin
+    objectives = []
+    for i in range(m):
+        prod = 1 + g
+        # producto de cosenos hasta θ[m−i−2]
+        for j in range(m - i - 1):
+            prod *= np.cos(theta[j])
+        # si no es el primer objetivo, multiplicar también por sin(θ[m−i−1])
+        if i > 0:
+            prod *= np.sin(theta[m - i - 1])
+        objectives.append(prod)
+
+    return objectives
+
+
+
 def generar_poblacion(n: int, n_variables: int, n_objetivos: int) -> list[Individuo]:
     """Genera población aleatoria para DTLZ1"""
     poblacion = []
@@ -71,4 +105,4 @@ if __name__ == "__main__":
     print(f"Soluciones no dominadas finales: {len(frente)}")
     for sol in frente:
         print(sol)
-#
+visualizar_frente(final_pop, frente)
