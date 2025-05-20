@@ -15,11 +15,12 @@ class RWGA:
 
     def weighted_average_crossover(self, x1, x2):
         #Este es nuestro operador de cruza. Da un vector de pesos uniformente aleatorios w y considera las siguientes combinaciones lineales como hijos: wa+(1-w)b y wb+(1-w)b
-        w = np.random.rand()
-        y1 = [(w * a + (1 - w) * b) for a, b in zip(x1, x2)]
-        y2 = [(w * b + (1 - w) * a) for a, b in zip(x1, x2)]
-        return y1, y2
-
+         w = np.random.rand(len(x1))  # Vector de pesos aleatorios
+         y1 = [wi * a + (1 - wi) * b for a, b, wi in zip(x1, x2, w)]
+         y2 = [wi * b + (1 - wi) * a for a, b, wi in zip(x1, x2, w)]
+         return y1, y2
+     
+     
     def mutate(self, x):
         y = x.copy()
         #Este es el operador de mutación. Funciona dando una probabilidad pm. 

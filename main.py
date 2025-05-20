@@ -105,4 +105,4 @@ if __name__ == "__main__":
     print(f"Soluciones no dominadas finales: {len(frente)}")
     for sol in frente:
         print(sol)
-visualizar_frente(final_pop, frente)
+    visualizar_frente(final_pop, final_pop)
