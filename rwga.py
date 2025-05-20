@@ -18,8 +18,8 @@ class RWGA:
          w = np.random.rand(len(x1))  # Vector de pesos aleatorios
          y1 = [wi * a + (1 - wi) * b for a, b, wi in zip(x1, x2, w)]
          y2 = [wi * b + (1 - wi) * a for a, b, wi in zip(x1, x2, w)]
-         return y1, y2
-     
+         return y1, y2 #ggg
+      
      
     def mutate(self, x):
         y = x.copy()
