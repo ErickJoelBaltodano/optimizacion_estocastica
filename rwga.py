@@ -77,18 +77,18 @@ class RWGA:
                 padres = np.random.choice(poblacion, size=2, replace=False, p=probs) #Elegimos a los padres de la poblacion usando el vector de probabilidades.
 
                 c1_x, c2_x = self.weighted_average_crossover(padres[0].x, padres[1].x) #Generamos los hijos usando el operador de cruza definido anteriormente con el respectivo w
-                c1_x = self.mutate(c1_x) #aplicamos el operador de mutacion a los hijos generados
+                c1_x = self.mutate(c1_x) #Aplicamos el operador de mutacion a los hijos generados
                 c2_x = self.mutate(c2_x)
 
                 funcs = padres[0].funciones
-                c1 = Individuo(c1_x, funcs); c2 = Individuo(c2_x, funcs)
+                c1 = Individuo(c1_x, funcs); c2 = Individuo(c2_x, funcs) #Crea dos nuevos individuos hijos con las mismas funciones objetivo.
                 c1.evaluar(); c2.evaluar()
-                offspring.extend([c1, c2])
+                offspring.extend([c1, c2]) #Se evaluan los nuevos individuos  y se agregan a la lista de descendientes.
 
-            if len(no_dom) <= self.n_elite:
-                elite_sel = no_dom.copy()
+            if len(no_dom) <= self.n_elite: #Seleccionamos n_elite individuos del frente de pareto. 
+                elite_sel = no_dom.copy() #Si el numero de individuos no dominados es menor o igual a n_elite, entonces seleccionamos a todos los individuos no dominados.
             else:
-                elite_sel = list(np.random.choice(no_dom, size=self.n_elite, replace=False))
+                elite_sel = list(np.random.choice(no_dom, size=self.n_elite, replace=False)) #Si el numero de individuos no dominados es mayor a n_elite, entonces seleccionamos n_elite individuos no dominados al azar.
 
             improved = [self.local_search(ind, w) for ind, w in zip(offspring, weight_list * (len(offspring)//len(weight_list)))]
             poblacion = elite_sel + improved
