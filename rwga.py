@@ -102,7 +102,7 @@ class RWGA:
                 nueva_pob.append(mejor)
 
           
-            poblacion = nueva_pob #Actualizamos la poblacion con la nueva poblacion generada.
+            poblacion = nueva_pob #Actualizamos la poblacion con la nueva poblacion generada
 
         return poblacion
 

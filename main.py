@@ -71,3 +71,4 @@ if __name__ == "__main__":
     print(f"Soluciones no dominadas finales: {len(frente)}")
     for sol in frente:
         print(sol)
+#
