@@ -84,13 +84,25 @@ class RWGA:
                 c1 = Individuo(c1_x, funcs); c2 = Individuo(c2_x, funcs) #Crea dos nuevos individuos hijos con las mismas funciones objetivo.
                 c1.evaluar(); c2.evaluar()
                 offspring.extend([c1, c2]) #Se evaluan los nuevos individuos  y se agregan a la lista de descendientes.
+                
+            if len(no_dom) <= self.n_elite: #Tomamos a los n_elites. Si el numero de individuos no dominados es menor o igual a n_elite, entonces tomamos a todos los individuos no dominados.
+                elites = no_dom.copy()
+            else: #Si el numero de individuos no dominados es mayor a n_elite, entonces tomamos n_elites de manera aleatoria.
+                elites = list(np.random.choice(no_dom, size=self.n_elite, replace=False))
 
-            if len(no_dom) <= self.n_elite: #Seleccionamos n_elite individuos del frente de pareto. 
-                elite_sel = no_dom.copy() #Si el numero de individuos no dominados es menor o igual a n_elite, entonces seleccionamos a todos los individuos no dominados.
-            else:
-                elite_sel = list(np.random.choice(no_dom, size=self.n_elite, replace=False)) #Si el numero de individuos no dominados es mayor a n_elite, entonces seleccionamos n_elite individuos no dominados al azar.
+            combinada = elites + offspring #Combinamos a los elites con los descendientes generados.
 
-            improved = [self.local_search(ind, w) for ind, w in zip(offspring, weight_list * (len(offspring)//len(weight_list)))]
-            poblacion = elite_sel + improved
+           
+            nueva_pob = [] #inicializa la nueva poblacion
+            for ind in combinada:
+                # Para cada individuo, generar nuevo peso y buscar mejora
+                w_ls = np.random.rand(self.n_obj)
+                w_ls /= w_ls.sum()
+                mejor = self.local_search(ind, w_ls)
+                nueva_pob.append(mejor)
+
+          
+            poblacion = nueva_pob #Actualizamos la poblacion con la nueva poblacion generada.
 
         return poblacion
+
