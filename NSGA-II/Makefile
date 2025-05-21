@@ -10,3 +10,7 @@ no_dominados:
 # Para probar la codificadora-decodificadora de vectores de reales-bits
 codificar-decodificar:
 	@python3 src/main_codificacion.py
+
+# Un intento del NSGA-II 
+nsga2:
+	@python3 src/main_nsga2.py

@@ -1,7 +1,7 @@
 # NSGA-II
 
-2. Flujo detallado del algoritmo
-2.1. Inicialización
+**Flujo detallado del algoritmo**
+1. Inicialización
 
 Se genera aleatoriamente una población P0P0​ de tamaño NN, evaluando cada individuo en los MM objetivos
 sci2s.ugr.es
@@ -89,3 +89,24 @@ Desde terminal estando dentro de la carpeta `src`.
 
 Un ejemplo de ejecución con la configuración actual:
 ![alt text](Imágenes/sols_no_dominadas.png)
+
+## Sobre `fast_nondominated_sort` dentro de `nsga2.py`
+
+El ordenamiento en este script (Fast Non-dominated Sort) tiene por objetivo:
+clasificar toda la población en varios “frentes” de dominancia:
+
+* Frente 1 ($F_1​$): individuos no dominados por ningún otro.
+
+* Frente 2 ($F_2​$​): individuos dominados solo por los de $F_1​$​.
+
+* Y así sucesivamente.
+En cada par $(p,q)$, comparamos dos individuos:
+
+    * $p$ es el actual “candidato” cuyo estado de dominancia estamos analizando.
+
+    * $q$ recorre todos los demás individuos para ver si domina o es dominado por $p$.
+
+
+Fuente de esto: https://www.geeksforgeeks.org/non-dominated-sorting-genetic-algorithm-2-nsga-ii/?utm_source=chatgpt.com
+
+
