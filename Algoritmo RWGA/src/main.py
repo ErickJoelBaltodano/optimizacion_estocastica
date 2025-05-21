@@ -97,8 +97,8 @@ def visualizar_frente(poblacion: list[Individuo], frente: list[Individuo]):
 
 if __name__ == "__main__":
     from main import dtlz1
-    rwga = RWGA(n_pop=100, n_var=7, n_obj=3, n_elite=30)
-    final_pop = rwga.run(n_gen=100, func_generator=lambda x: dtlz1(x, 3))
+    rwga = RWGA(n_pop=200, n_var=7, n_obj=3, n_elite=60)
+    final_pop = rwga.run(n_gen=150, func_generator=lambda x: dtlz1(x, 3))
     for ind in final_pop:
         ind.evaluar()
     frente = Version_cuadratica.frente_pareto(final_pop)
