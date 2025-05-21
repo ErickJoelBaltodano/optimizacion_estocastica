@@ -104,4 +104,7 @@ En cada par $(p,q)$, comparamos dos individuos:
 
 Fuente de esto: https://www.geeksforgeeks.org/non-dominated-sorting-genetic-algorithm-2-nsga-ii/?utm_source=chatgpt.com
 
+## Sobre los `operadores_cruza.py`
+
+Los operadores ahí expuestos no corresponden a *SBX (Simulated Binary Crossover)*; por cuestiones de tiempo no alcanzamos a ver este operador en el curso, para fines de esta tarea y que el código no sea tan pesado, se optó por el de cruza de dos puntos. 
 

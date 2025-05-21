@@ -81,7 +81,14 @@ class NSGA2:
         self.pobl_bits: List[str] = []
 
     def inicializar(self):
-        """Genera población inicial en binario, la decodifica y evalúa."""
+        """
+        Genera población inicial de vectores reales y la codifica para obtener una
+        de vectores de bits. Luego, lo decodifica nuevamente como un vector de reales
+        y evalúa a este vector en el problema dado.
+        Puede parecer redundante, pero es necesario para que la población inicial 
+        evaluada sí corresponda a la población de bits; por cuestiones del proceso de
+        impresiciones en el proceso de pasar de reales a bits y viceversa.
+        """
         self.pobl.clear()
         self.pobl_bits.clear()
         for _ in range(self.N):
