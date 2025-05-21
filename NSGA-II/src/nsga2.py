@@ -9,8 +9,8 @@ from problema_dtlz import *
 
 def fast_nondominated_sort(pob: List[Individuo]) -> List[List[Individuo]]:
     """
-    Ordenamiento no dominado rápido aplicado a tu clase Individuo.
-    Devuelve lista de frentes: [F1, F2, ...], donde cada Fi es lista de Individuo.
+    Ordenamiento no dominado rápido aplicado a la clase Individuo.
+    Devuelve lista de frentes: [F1, F2, ...], donde cada Fi es lista de individuos.
     """
     S: Dict[Individuo, List[Individuo]] = {p: [] for p in pob}
     n: Dict[Individuo, int] = {p: 0 for p in pob}
@@ -43,7 +43,7 @@ def fast_nondominated_sort(pob: List[Individuo]) -> List[List[Individuo]]:
 
 def crowding_distance(front: List[Individuo]) -> Dict[Individuo, float]:
     """
-    Calcula la distancia de hacinamiento de un frente dado (lista de Individuo).
+    Calcula la distancia de hacinamiento de un frente dado (lista de individuos).
     """
     distances = {p: 0.0 for p in front}
     M = len(front[0].f)  # número de objetivos
@@ -57,7 +57,7 @@ def crowding_distance(front: List[Individuo]) -> Dict[Individuo, float]:
         for i in range(1, len(front)-1):
             prev_f = front[i-1].f[m]
             next_f = front[i+1].f[m]
-            if f_max > f_min:  # evitar división por cero
+            if f_max > f_min:  # evita división entre cero
                 distances[front[i]] += (next_f - prev_f) / (f_max - f_min)
 
     return distances
@@ -127,7 +127,7 @@ class NSGA2:
 
                 # cruce y mutación
                 if random.random() < self.cx_prob:
-                    c1, c2 = cruza_un_punto(b1, b2)
+                    c1, c2 = cruza_dos_puntos(b1, b2)
                 else:
                     c1, c2 = b1, b2
                 c1 = mutacion_bit_flip(c1, self.mut_prob)
