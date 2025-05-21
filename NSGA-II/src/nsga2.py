@@ -1,7 +1,7 @@
 import random
 from typing import List, Dict
 from individuo import *
-from frente_de_pareto import *
+#from frente_de_pareto import * # En efecto, no se usa jajajajajajaja
 from codificacion import vector_real_a_binario, binario_a_vector_real
 from operadores_cruza import *
 from mutacion import *
