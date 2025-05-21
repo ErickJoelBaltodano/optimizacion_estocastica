@@ -3,57 +3,52 @@
 **Flujo detallado del algoritmo**
 1. Inicialización
 
-Se genera aleatoriamente una población P0P0​ de tamaño NN, evaluando cada individuo en los MM objetivos
-sci2s.ugr.es
-.
-2.2. Ordenamiento no dominado
+Se genera aleatoriamente una población $P_0$​ de tamaño $N$, evaluando cada individuo en los $M$ objetivos.
 
-    Fast Non-Dominated Sort: clasifica PtPt​ en frentes F1,F2,…F1​,F2​,… según niveles de dominancia
-    sci2s.ugr.es
-    .
+2. Ordenamiento no dominado
 
-    Asigna a cada individuo un rank igual al índice de su frente.
+    * *Fast Non-Dominated Sort:* clasifica $P_t$​ en frentes $F_1,F_2,…$ según niveles de dominancia.
 
-2.3. Cálculo de la distancia de hacinamiento
+    * Asigna a cada individuo un rango igual al índice de su frente.
+    * Más abajo se explica esto con más detalle.
 
-Para cada frente FiFi​:
+3. Cálculo de la distancia de hacinamiento (crowding distance)
 
-    Ordena soluciones por cada objetivo.
+    Para cada frente $F_i$:
 
-    Calcula la distancia de hacinamiento como la suma de las distancias normalizadas a los vecinos inmediatos en cada objetivo
-    cse.unr.edu
-    .
+    * Ordena soluciones por cada objetivo.
 
-2.4. Selección por torneo binario
+    * Calcula la distancia de hacinamiento como la suma de las distancias normalizadas a los vecinos inmediatos en cada objetivo
+ 
 
-Para generar la población de cría QtQt​:
+4. Selección por torneo binario
 
-    Repite NN veces un torneo entre dos individuos aleatorios.
+    Para generar la población de hijos $Q_t$​:
 
-    Compara primero rank; si hay empate elige el de mayor distancia de hacinamiento
-    Pymoo
-    .
+    * Repite $N$ veces un torneo entre dos individuos aleatorios.
 
-2.5. Cruce y mutación
+    * Compara primero eel rango; si hay empate elige el de mayor distancia de hacinamiento. 
 
-Aplica operadores como SBX (Simulated Binary Crossover) y mutación polinomial a los padres seleccionados para crear QtQt​
-Medium
-.
-2.6. Selección de supervivencia
+5. Cruce y mutación
 
-    Une las poblaciones Rt=Pt∪QtRt​=Pt​∪Qt​.
+    Aplica operadores como SBX (Simulated Binary Crossover) y mutación polinomial a los padres seleccionados para crear $Q_t$
 
-    Repite el ordenamiento no dominado y el cálculo de distancia en RtRt​.
+6. Selección de supervivencia
 
-    Llena Pt+1Pt+1​ con frentes completos hasta alcanzar NN.
+    Une las poblaciones $R_t=P_t \cup Q_t​$
 
-    Si un frente no cabe entero, ordena sus soluciones por distancia de hacinamiento y selecciona las más dispersas para completar Pt+1Pt+1​
-    ScienceDirect
-    .
+    Repite el ordenamiento no dominado y el cálculo de distancia en $R_t$​.
 
-2.7. Criterio de parada
+    Llena $P_{t+1}$​ con frentes completos hasta alcanzar $N$ individuos.
 
-Detén después de un número GG de generaciones o un límite de evaluaciones 
+    Si un frente no cabe entero, ordena sus soluciones por distancia de hacinamiento y selecciona las más dispersas para completar $P_{t+1}$
+
+
+7. Criterio de parada
+
+    Nos detenemos después de un número $G$ de generaciones o un límite de evaluaciones.
+
+Fuente de esto: Artículo original del 2002 sobre NSGA-II, https://medium.com/%40rossleecooloh/optimization-algorithm-nsga-ii-and-python-package-deap-fca0be6b2ffc, ChatGPT y esta cosa: https://www.sciencedirect.com/topics/computer-science/non-dominated-sorting-genetic-algorithm-ii?utm_source=chatgpt.com 
 
 ## Sobre la representación de los individuos de la población y la generadora de individuos no-dominados.
 
