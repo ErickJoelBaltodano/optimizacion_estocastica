@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from individuo import *
 from rwga import *
 from frente_de_pareto_cuadratico import *
+import os
 
 def dtlz1(x: list, m: int = 3) -> list:
     """Función benchmark DTLZ1 para pruebas"""
@@ -158,25 +159,25 @@ if __name__ == "__main__":
     final_pop = None
     
     match(ejemplar):
-        case "dltz1":
+        case "dtlz1":
             final_pop = rwga.run(n_gen=150, func_generator=lambda x: dtlz1(x, 3))
         
-        case "dltz2":
+        case "dtlz2":
             final_pop = rwga.run(n_gen=150, func_generator=lambda x: dtlz2(x, 3))
             
-        case "dltz3":
+        case "dtlz3":
             final_pop = rwga.run(n_gen=150, func_generator=lambda x: dtlz3(x, 3))
         
-        case "dltz4":
+        case "dtlz4":
             final_pop = rwga.run(n_gen=150, func_generator=lambda x: dtlz4(x, 3))
             
-        case "dltz5":
+        case "dtlz5":
             final_pop = rwga.run(n_gen=150, func_generator=lambda x: dtlz5(x, 3))
         
         case _:
             print ("Ejemplar no Válido")
             
-            
+    
     if final_pop != None:
         
         for ind in final_pop:
@@ -189,5 +190,27 @@ if __name__ == "__main__":
         
         guardar_bool = input("Deseas guardar esta solución S/N\n")
         
-        #if guardar_bool is "S" or guardar_bool is "s":
+        
+        #Guardamos la población final de los ejemplares en el fichero correspondiente.
+        if guardar_bool is "S" or guardar_bool is "s":
             
+            # Obtenemos la ruta base del proyecto (dos niveles arriba del actual)
+            ruta_base = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+
+            # Ruta final donde guardar resultados
+            carpeta_resultados = os.path.join(ruta_base, "Results", "RWGA", ejemplar)
+            os.makedirs(carpeta_resultados, exist_ok=True)
+
+            # Nombre del archivo de salida
+            nombre = input("Ingresa el nombre con el cual desea guardar esta solución.\n")
+            fichero = os.path.join(carpeta_resultados, f"{nombre}.txt")
+
+            # Guardamos los resultados
+            with open(fichero, 'w') as f:
+                f.write(f"Soluciones no dominadas del ejemplar: {ejemplar}\n\n")
+                for i, ind in enumerate(frente):
+                    f.write(f"Individuo {i+1}:\n")
+                    f.write(f"  Variables: {np.round(ind.x, 4).tolist()}\n")
+                    f.write(f"  Objetivos: {np.round(ind.f, 4).tolist()}\n\n")
+
+            print(f"Frente de Pareto guardado en: {fichero}")
