@@ -14,6 +14,37 @@ def dtlz1(x: list, m: int = 3) -> list:
     objectives.append(0.5 * (1 - x[0]) * (1 + g))
     return objectives
 
+def dtlz3(x: list, m: int = 3) -> list:
+    """Función benchmark DTLZ3"""
+    k = len(x) - m + 1
+    g = 10 * k + sum((xi - 0.5)**2 - np.cos(20 * np.pi * (xi - 0.5)) for xi in x[-k:])
+    
+    objectives = []
+    for i in range(m):
+        f = 0.5 * (1 + g)
+        for j in range(m - i - 1):
+            f *= x[j]
+        if i > 0:
+            f *= (1 - x[m - i - 1])
+        objectives.append(f)
+    return objectives
+
+def dtlz4(x: list, m: int = 3, alpha: int = 100) -> list:
+    """Función benchmark DTLZ4 con sesgo en las variables (alpha típico = 100)"""
+    x_mod = [xi**alpha for xi in x]  # deformación en los primeros m-1
+    k = len(x_mod) - m + 1
+    g = sum((xi - 0.5)**2 for xi in x_mod[-k:])
+    
+    objectives = []
+    for i in range(m):
+        f = 1 + g
+        for j in range(m - i - 1):
+            f *= np.cos(0.5 * np.pi * x_mod[j])
+        if i > 0:
+            f *= np.sin(0.5 * np.pi * x_mod[m - i - 1])
+        objectives.append(f)
+    return objectives
+
 def dtlz5(x: list, m: int = 3) -> list:
     """
     Función benchmark DTLZ5 para pruebas.
@@ -118,12 +149,45 @@ def visualizar_frente(poblacion: list[Individuo], frente: list[Individuo]):
         print("Visualización solo disponible para 2 o 3 objetivos")
 
 if __name__ == "__main__":
+    
+    #Preguntamos al usuario el nombre del ejemplar
+    ejemplar = input ("Ingresa el nombre del ejemplar (dtlz1,dtlz2,dtlz3,dtlz4 o dltz5)\n")
+    
+    #Inicializamos nuestros parametros del algoritmo.
     rwga = RWGA(n_pop=200, n_var=7, n_obj=3, n_elite=60)
-    final_pop = rwga.run(n_gen=150, func_generator=lambda x: dtlz2(x, 3))
-    for ind in final_pop:
-        ind.evaluar()
-    frente = Version_cuadratica.frente_pareto(final_pop)
-    print(f"Soluciones no dominadas finales: {len(frente)}")
-    for sol in frente:
-        print(sol)
-    visualizar_frente(final_pop, final_pop)
+    final_pop = None
+    
+    match(ejemplar):
+        case "dltz1":
+            final_pop = rwga.run(n_gen=150, func_generator=lambda x: dtlz1(x, 3))
+        
+        case "dltz2":
+            final_pop = rwga.run(n_gen=150, func_generator=lambda x: dtlz2(x, 3))
+            
+        case "dltz3":
+            final_pop = rwga.run(n_gen=150, func_generator=lambda x: dtlz3(x, 3))
+        
+        case "dltz4":
+            final_pop = rwga.run(n_gen=150, func_generator=lambda x: dtlz4(x, 3))
+            
+        case "dltz5":
+            final_pop = rwga.run(n_gen=150, func_generator=lambda x: dtlz5(x, 3))
+        
+        case _:
+            print ("Ejemplar no Válido")
+            
+            
+    if final_pop != None:
+        
+        for ind in final_pop:
+            ind.evaluar()
+        frente = Version_cuadratica.frente_pareto(final_pop)
+        print(f"Soluciones no dominadas finales: {len(frente)}")
+        for sol in frente:
+            print(sol)
+        visualizar_frente(final_pop, final_pop)
+        
+        guardar_bool = input("Deseas guardar esta solución S/N\n")
+        
+        #if guardar_bool is "S" or guardar_bool is "s":
+            
