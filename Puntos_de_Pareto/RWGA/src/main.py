@@ -46,6 +46,28 @@ def dtlz5(x: list, m: int = 3) -> list:
 
     return objectives
 
+def dtlz2(x: list, m: int = 3) -> list:
+    """
+    Función benchmark DTLZ2 para pruebas.
+    x: lista de n variables en [0,1]
+    m: número de objetivos
+    Devuelve lista de m valores [f1, f2, ..., fm]
+    """
+    k = len(x) - m + 1
+    g = sum((xi - 0.5)**2 for xi in x[-k:])  # g(x_M)
+
+    theta = [np.pi / 2 * xi for xi in x[:m-1]]  # ángulos θ
+
+    objectives = []
+    for i in range(m):
+        prod = 1 + g
+        for j in range(m - i - 1):
+            prod *= np.cos(theta[j])
+        if i > 0:
+            prod *= np.sin(theta[m - i - 1])
+        objectives.append(prod)
+
+    return objectives
 
 
 def generar_poblacion(n: int, n_variables: int, n_objetivos: int) -> list[Individuo]:
@@ -97,7 +119,7 @@ def visualizar_frente(poblacion: list[Individuo], frente: list[Individuo]):
 
 if __name__ == "__main__":
     rwga = RWGA(n_pop=200, n_var=7, n_obj=3, n_elite=60)
-    final_pop = rwga.run(n_gen=150, func_generator=lambda x: dtlz1(x, 3))
+    final_pop = rwga.run(n_gen=150, func_generator=lambda x: dtlz2(x, 3))
     for ind in final_pop:
         ind.evaluar()
     frente = Version_cuadratica.frente_pareto(final_pop)
