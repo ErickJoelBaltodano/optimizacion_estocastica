@@ -3,6 +3,8 @@ import pandas as pd
 from problema_dtlz import ProblemaDTLZ
 from nsga2 import NSGA2
 from plot import plot_comparacion
+import numpy as np
+import os
 
 
 if __name__ == "__main__":
@@ -41,5 +43,35 @@ if __name__ == "__main__":
 
     # 5) Graficar tablas y frentes
     plot_comparacion(frente_aprox, fr_opt)
+    
+    
+    
+        
+        # Guardamos frente_aprox si el usuario lo desea
+    if frente_aprox:
+        print(f"Soluciones no dominadas finales: {len(frente_aprox)}")
+        for i, f in enumerate(frente_aprox):
+            print(f"Individuo {i+1}: {np.round(f, 4).tolist()}")
 
+        guardar_bool = input("¿Deseas guardar esta solución? (S/N)\n")
 
+        if guardar_bool.lower() == "s":
+            # Ruta base del proyecto (dos niveles arriba de src/)
+            ruta_base = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+
+            # Ruta de resultados para este ejemplar
+            carpeta_resultados = os.path.join(ruta_base, "Results", "NSGA-II", ejemplar)
+            os.makedirs(carpeta_resultados, exist_ok=True)
+
+            # Nombre del archivo de salida
+            nombre = input("Ingresa el nombre con el cual deseas guardar esta solución.\n")
+            fichero = os.path.join(carpeta_resultados, f"{nombre}.txt")
+
+            # Guardamos el frente de Pareto
+            with open(fichero, 'w') as f:
+                f.write(f"Soluciones no dominadas del ejemplar: {ejemplar}\n\n")
+                for i, objetivos in enumerate(frente_aprox):
+                    f.write(f"Individuo {i+1}:\n")
+                    f.write(f"  Objetivos: {np.round(objetivos, 4).tolist()}\n\n")
+
+            print(f"Frente de Pareto guardado en: {fichero}")
